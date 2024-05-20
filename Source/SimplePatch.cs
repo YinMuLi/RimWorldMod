@@ -16,9 +16,16 @@ namespace YinMu.Source
         [HarmonyPatch(typeof(GenLeaving), "GetBuildingResourcesLeaveCalculator")]
         private static void GetBuildingResourcesLeaveCalculator(Thing destroyedThing, DestroyMode mode, ref Func<int, int> __result)
         {
-            if (mode == DestroyMode.Deconstruct && GenLeaving.CanBuildingLeaveResources(destroyedThing, mode))
+            if (GenLeaving.CanBuildingLeaveResources(destroyedThing, mode))
             {
-                __result = (int count) => count;
+                switch (mode)
+                {
+                    case DestroyMode.Deconstruct://拆除
+                    case DestroyMode.FailConstruction://建造失败
+                    case DestroyMode.KillFinalize://完全摧毁
+                        __result = (int count) => GenMath.RoundRandom((float)count * 1f);
+                        break;
+                }
             }
         }
     }
