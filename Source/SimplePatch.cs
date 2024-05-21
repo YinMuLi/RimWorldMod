@@ -10,7 +10,7 @@ namespace YinMu.Source
     internal class SimplePatch
     {
         /// <summary>
-        /// 摧毁建筑返还所有材料
+        /// 建筑返还所有材料
         /// </summary>
         [HarmonyPostfix]
         [HarmonyPatch(typeof(GenLeaving), "GetBuildingResourcesLeaveCalculator")]

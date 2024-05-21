@@ -58,6 +58,23 @@
     <PackageReference Include="Lib.Harmony">
       <Version>2.3.3</Version>
     </PackageReference>
+    <PackageReference Include="UnlimitedHugs.Rimworld.HugsLib">
+      <Version>11.0.3</Version>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="README.md" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>IF EXIST "$(TargetDir)0Harmony.dll" (
+    DEL "$(TargetDir)0Harmony.dll"
+)
+IF EXIST "$(TargetDir)0Harmony.pdb" (
+    DEL "$(TargetDir)0Harmony.pdb"
+)
+IF EXIST "$(TargetDir)HugsLib.dll" (
+    DEL "$(TargetDir)HugsLib.dll"
+)</PostBuildEvent>
+  </PropertyGroup>
 </Project>

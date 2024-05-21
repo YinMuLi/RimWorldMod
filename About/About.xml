@@ -10,7 +10,7 @@
 	<description>
 		1.摧毁建筑返还所有材料
 	</description>
-	<modDependencies>
+	<!--<modDependencies>
 		<li>
 			<packageId>brrainz.harmony</packageId>
 			<displayName>Harmony</displayName>
@@ -20,8 +20,8 @@
 	</modDependencies>
 	<loadAfter>
 		<li>brrainz.harmony</li>
-	</loadAfter>
-	<!--<modDependencies>
+	</loadAfter>-->
+	<modDependencies>
 		<li>
 			<packageId>UnlimitedHugs.HugsLib</packageId>
 			<displayName>HugsLib</displayName>
@@ -31,5 +31,5 @@
 	</modDependencies>
 	<loadAfter>
 		<li>UnlimitedHugs.HugsLib</li>
-	</loadAfter>-->
+	</loadAfter>
 </ModMetaData>
