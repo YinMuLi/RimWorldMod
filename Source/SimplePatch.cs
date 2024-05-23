@@ -31,5 +31,12 @@ namespace YinMu.Source
                 }
             }
         }
+
+        /// <summary>
+        /// 植物不会得枯萎病
+        /// </summary>
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(Plant), nameof(Plant.CropBlighted))]
+        private static bool CropBlighted() => false;
     }
 }
