@@ -45,9 +45,7 @@
     <Compile Include="Source\modEntry.cs" />
     <Compile Include="Source\SimplePatch.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Assemblies\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="About\About.xml" />
   </ItemGroup>
