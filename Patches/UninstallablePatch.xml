@@ -1,17 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Patch>
-  <!-- 可打包喷泉 -->
-  <Operation Class="PatchOperationAdd">
-    <xpath>/Defs/ThingDef[defName = "SteamGeyser"]</xpath>
-    <value>
-      <minifiedDef>MinifiedThing</minifiedDef>
-      <thingCategories>
-        <li>BuildingsMisc</li>
-      </thingCategories>
-      <statBases>
-        <Mass>1</Mass>
-      </statBases>
-    </value>
-  </Operation>
-
+	<!-- 可打包喷泉 -->
+	<Operation Class="PatchOperationAdd">
+		<xpath>/Defs/ThingDef[defName = "SteamGeyser"]</xpath>
+		<value>
+			<minifiedDef>MinifiedThing</minifiedDef>
+			<thingCategories>
+				<li>BuildingsMisc</li>
+			</thingCategories>
+			<statBases>
+				<Mass>1</Mass>
+			</statBases>
+		</value>
+	</Operation>
 </Patch>

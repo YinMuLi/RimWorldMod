@@ -48,6 +48,7 @@
   <ItemGroup />
   <ItemGroup>
     <Content Include="About\About.xml" />
+    <Content Include="Patches\UninstallablePatch.xml" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Krafs.Rimworld.Ref">
