@@ -9,6 +9,10 @@ using Verse;
 
 namespace YinMu.Source
 {
+    /// <summary>
+    /// 类上一定要加[Harmony]
+    /// </summary>
+    [Harmony]
     internal class SimplePatch
     {
         /// <summary>
@@ -25,7 +29,8 @@ namespace YinMu.Source
                     case DestroyMode.Deconstruct://拆除
                     case DestroyMode.FailConstruction://建造失败
                     case DestroyMode.KillFinalize://完全摧毁
-                        __result = (int count) => count;
+                        //用的环世界源代码写法
+                        __result = (int count) => GenMath.RoundRandom((float)count * 1f);
                         break;
                 }
             }
