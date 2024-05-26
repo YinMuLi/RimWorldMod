@@ -1,9 +1,7 @@
 ﻿using HarmonyLib;
-using HugsLib.Utils;
 using RimWorld;
 
 using System;
-using System.Linq;
 using UnityEngine;
 using Verse;
 
@@ -73,7 +71,6 @@ namespace YinMu.Source
         /// <summary>
         /// 当尸体开始腐烂，衣服打上“亡者”标签
         /// </summary>
-        /// <param name="__instance"></param>
         [HarmonyPostfix]
         [HarmonyPatch(typeof(Corpse), nameof(Corpse.RotStageChanged))]
         private static void RotStageChanged(Corpse __instance)
@@ -88,5 +85,18 @@ namespace YinMu.Source
         }
 
         #endregion 尸体腐烂小人穿的衣服才会有“已亡”
+
+        /// <summary>
+        /// 小人禁止生成亲戚
+        /// </summary>
+        /// <param name="__result"></param>
+        /// <returns></returns>
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(PawnRelationWorker), nameof(PawnRelationWorker.BaseGenerationChanceFactor))]
+        private static bool BaseGenerationChanceFactor(ref float __result)
+        {
+            __result = 0f;
+            return false;
+        }
     }
 }
