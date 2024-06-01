@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using HugsLib.Utils;
 using RimWorld;
 
 using System;
@@ -35,7 +36,7 @@ namespace YinMu.Source
         }
 
         /// <summary>
-        /// 植物不会得枯萎病
+        /// 植物不会得枯萎病,虽然会有黄色通知
         /// </summary>
         [HarmonyPrefix]
         [HarmonyPatch(typeof(Plant), nameof(Plant.CropBlighted))]
