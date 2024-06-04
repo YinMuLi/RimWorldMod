@@ -8,7 +8,7 @@ namespace YinMu.Source.WealthList
     public class WealthThingGroup
     {
         public string name;
-        public List<Wealth_Thing> things = [];
+        public List<WealthThing> things = [];
         public bool expanded;//是否已经展开
         public float Wealth => things.Sum(t => t.wealth);
 
@@ -18,13 +18,13 @@ namespace YinMu.Source.WealthList
             Add(list, func);
         }
 
-        public void Add(List<Thing> list, Func<Thing, float> func)
+        public void Add(List<Thing> list, Func<Thing, float> singleValue)
         {
-            var res = list.GroupBy(t => t.LabelNoCount)
-                .Select(group => new Wealth_Thing
+            var res = list.GroupBy(t => $"{t.def}{singleValue(t)}")
+                .Select(group => new WealthThing
                 {
                     thing = group.RandomElement(),
-                    wealth = group.Sum(t => func(t)),
+                    wealth = group.Sum(t => singleValue(t) * t.stackCount),
                     count = group.Sum(t => t.stackCount)
                 });
             things.AddRange(res);
@@ -36,7 +36,7 @@ namespace YinMu.Source.WealthList
         }
     }
 
-    public struct Wealth_Thing
+    public struct WealthThing
     {
         public Thing thing;
         public float wealth;
@@ -46,7 +46,9 @@ namespace YinMu.Source.WealthList
         {
             get
             {
-                if (count > 1) return $"{thing.LabelCapNoCount}X{count}";
+                //Label=>LabelNoCount + " x" + stackCount.ToStringCached()
+                //LabelNoCount => GenLabel.ThingLabel(this, 1)
+                if (count > 1) return $"{thing.LabelNoParenthesis} x{count}";
                 return thing.LabelNoCount;
             }
         }
