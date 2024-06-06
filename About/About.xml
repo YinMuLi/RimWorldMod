@@ -7,9 +7,7 @@
 		<li>1.5</li>
 	</supportedVersions>
 	<packageId>YinMu.ImproveGameLife</packageId>
-	<description>
-		1.摧毁建筑返还所有材料
-	</description>
+	<description>主要功能见项目的README.ME</description>
 	<!--<modDependencies>
 		<li>
 			<packageId>brrainz.harmony</packageId>
