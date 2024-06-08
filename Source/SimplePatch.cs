@@ -1,9 +1,12 @@
 ﻿using HarmonyLib;
 using RimWorld;
-
+using RimWorld.Planet;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Verse;
+using YinMu.Source.ShowTrade;
 
 namespace YinMu.Source
 {
@@ -97,6 +100,72 @@ namespace YinMu.Source
         {
             __result = 0f;
             return false;
+        }
+
+        /// <summary>
+        /// Settlement:定居点 Gizmos：小控件
+        /// </summary>
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(Settlement), nameof(Settlement.GetGizmos))]
+        private static void GetGizmos(Settlement __instance, ref IEnumerable<Gizmo> __result)
+        {
+            //Colonists:殖民者
+            if (__instance.CanTradeNow && !__instance.Faction.def.permanentEnemy)
+            {
+                //__result.AddItem没有用
+                List<Gizmo> list = __result.ToList();
+                list.Add(new Command_Action
+                {
+                    defaultLabel = "CommandShowSettlementGoods".Translate(),
+                    defaultDesc = "CommandShowSettlementGoodsDesc".Translate(),
+                    icon = Settlement.ShowSellableItemsCommand,
+                    action = () =>
+                    {
+                        //寻找在此部落协商最成功的小人
+                        Pawn negotiator = null;
+                        float num = 0f;
+                        //基地
+                        foreach (Map map in Find.Maps.Where(m => m.ParentFaction == Faction.OfPlayer))
+                        {
+                            foreach (Pawn pawn in map.mapPawns.FreeColonistsSpawned)
+                            {
+                                if (pawn.IsColonist && !pawn.WorkTagIsDisabled(WorkTags.Social))
+                                {
+                                    float statValue = StatExtension.GetStatValue(pawn, StatDefOf.TradePriceImprovement, true, -1);
+                                    if (statValue > num)
+                                    {
+                                        num = statValue;
+                                        negotiator = pawn;
+                                    }
+                                }
+                            }
+                        }
+                        //远行队
+                        foreach (Caravan caravan in Find.WorldObjects.Caravans.Where(c => c.Faction == Faction.OfPlayer))
+                        {
+                            foreach (Pawn pawn in caravan.PawnsListForReading)
+                            {
+                                if (pawn.IsColonist && !pawn.WorkTagIsDisabled(WorkTags.Social))
+                                {
+                                    float statValue2 = StatExtension.GetStatValue(pawn, StatDefOf.TradePriceImprovement, true, -1);
+                                    if (statValue2 > num)
+                                    {
+                                        num = statValue2;
+                                        negotiator = pawn;
+                                    }
+                                }
+                            }
+                        }
+                        Find.WindowStack.Add(new Dialog_TradeableGoods(__instance, negotiator));
+                        RoyalTitleDef titleRequiredToTrade = __instance.TraderKind.TitleRequiredToTrade;
+                        if (titleRequiredToTrade != null)
+                        {
+                            TutorUtility.DoModalDialogIfNotKnown(ConceptDefOf.TradingRequiresPermit, titleRequiredToTrade.GetLabelCapForBothGenders());
+                        }
+                    }
+                });
+                __result = list;
+            }
         }
     }
 }

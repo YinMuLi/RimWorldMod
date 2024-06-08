@@ -32,7 +32,8 @@ namespace YinMu.Source.WealthList
 
         public void Desc()
         {
-            things.SortByDescending(t => t.wealth);
+            //第一是按财富排名，第二是按名字长度
+            things.SortByDescending(t => t.wealth, t => t.DisplayName);
         }
     }
 

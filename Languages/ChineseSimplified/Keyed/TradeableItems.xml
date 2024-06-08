@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+	<CommandShowSettlementGoods>待售物品</CommandShowSettlementGoods>
+	<CommandShowSettlementGoodsDesc>查看该基地的待售物品。</CommandShowSettlementGoodsDesc>
+	<WindowTitle>{0} 的待售物品 (货物刷新剩余 {1})</WindowTitle>
+	<BestPawn>你最佳交易者为 {0} ({1} 的价格改善,显示的物品价格已计算价格改善)</BestPawn>
+</LanguageData>
