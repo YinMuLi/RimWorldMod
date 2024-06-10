@@ -1,10 +1,8 @@
 ﻿using RimWorld;
 using RimWorld.Planet;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Rendering;
 using Verse;
 
 namespace YinMu.Source.ShowTrade
@@ -20,6 +18,8 @@ namespace YinMu.Source.ShowTrade
         private Tradeable currencyTradeable;//商队持有的金钱
         private Pawn negotiator;
         private readonly float negotiatorStat;
+
+        private List<Tradeable> cachedTradeables = [];
         public override Vector2 InitialSize => new Vector2(1024f * 0.8f, UI.screenHeight);
 
         public Dialog_TradeableGoods(ITrader trader, Pawn negotiator)
@@ -149,34 +149,34 @@ namespace YinMu.Source.ShowTrade
 
         private void Group()
         {
-            List<Tradeable> tradeables = [];
+            cachedTradeables.Clear();
             //获取交易物品
             foreach (var good in trader.Goods)
             {
-                Tradeable tradeable = TransferableUtility.TradeableMatching(good, tradeables);
+                Tradeable tradeable = TransferableUtility.TradeableMatching(good, cachedTradeables);
                 if (tradeable == null)
                 {
-                    tradeable = !(good is Pawn) ? new Tradeable() : new Tradeable_Pawn();
-                    tradeables.Add(tradeable);
+                    tradeable = good is Pawn ? new Tradeable_Pawn() : new Tradeable();
+                    cachedTradeables.Add(tradeable);
                 }
                 tradeable.AddThing(good, Transactor.Trader);
             }
             //Currency:货币
-            currencyTradeable = GenCollection.FirstOrDefault<Tradeable>(tradeables, x => x.IsCurrency && !x.IsFavor);
-            tradeables = tradeables.Where(tr => !tr.IsCurrency && (tr.TraderWillTrade || !TradeSession.trader.TraderKind.hideThingsNotWillingToTrade)).ToList();
+            currencyTradeable = GenCollection.FirstOrDefault<Tradeable>(cachedTradeables, x => x.IsCurrency && !x.IsFavor);
+            cachedTradeables = cachedTradeables.Where(tr => !tr.IsCurrency && (trader.TraderKind.WillTrade(tr.ThingDef) || !TradeSession.trader.TraderKind.hideThingsNotWillingToTrade)).ToList();
             //对物品进行分组
             displayGroup.Add(new TradeableGroup
             {
                 name = "PawnsTabShort".Translate(),//生物
-                list = tradeables.Where(tr => tr is Tradeable_Pawn).ToList(),
+                list = cachedTradeables.Where(tr => tr is Tradeable_Pawn).ToList(),
             });
-            displayGroup.Add(new TradeableGroup(ThingCategoryDefOf.Foods, tradeables));//食物
-            displayGroup.Add(new TradeableGroup(ThingCategoryDefOf.ResourcesRaw, tradeables));//原材料
-            displayGroup.Add(new TradeableGroup(ThingCategoryDefOf.Weapons, tradeables));//武器
-            displayGroup.Add(new TradeableGroup(ThingCategoryDefOf.Items, tradeables));//物品
-            displayGroup.Add(new TradeableGroup(ThingCategoryDefOf.Manufactured, tradeables));//制成品
-            displayGroup.Add(new TradeableGroup(ThingCategoryDefOf.Apparel, tradeables));//衣物
-            displayGroup.Add(new TradeableGroup(ThingCategoryDefOf.Buildings, tradeables));//建筑
+            displayGroup.Add(new TradeableGroup(ThingCategoryDefOf.Foods, cachedTradeables));//食物
+            displayGroup.Add(new TradeableGroup(ThingCategoryDefOf.ResourcesRaw, cachedTradeables));//原材料
+            displayGroup.Add(new TradeableGroup(ThingCategoryDefOf.Weapons, cachedTradeables));//武器
+            displayGroup.Add(new TradeableGroup(ThingCategoryDefOf.Items, cachedTradeables));//物品
+            displayGroup.Add(new TradeableGroup(ThingCategoryDefOf.Manufactured, cachedTradeables));//制成品
+            displayGroup.Add(new TradeableGroup(ThingCategoryDefOf.Apparel, cachedTradeables));//衣物
+            displayGroup.Add(new TradeableGroup(ThingCategoryDefOf.Buildings, cachedTradeables));//建筑
 
             displayGroup.RemoveWhere(g => g.list.Count < 1);
             //TODO:排序

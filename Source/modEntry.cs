@@ -1,4 +1,6 @@
 ﻿using HugsLib;
+using HugsLib.Utils;
+using RimWorld;
 using Verse;
 
 namespace YinMu.Source
@@ -20,16 +22,6 @@ namespace YinMu.Source
                 {
                     thingDef.plant.sowTags.Add("Hydroponic");
                 }
-
-                //所有建筑可以打包
-                //if (thingDef.BuildableByPlayer && !thingDef.mineable)
-                //{
-                //    thingDef.minifiedDef = ThingDef.Named(defName: "MinifiedThing");
-                //    thingDef.thingCategories = new List<ThingCategoryDef>
-                //    {
-                //        ThingCategoryDef.Named(defName: "BuildingsMisc")
-                //    };
-                //}
             }
         }
     }

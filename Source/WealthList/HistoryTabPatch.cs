@@ -89,11 +89,11 @@ namespace YinMu.Source.WealthList
                         Widgets.Label(rect.LeftHalf().RightPart(0.8f), wealthThing.DisplayName);
                         Text.Anchor = TextAnchor.MiddleRight;
                         Widgets.Label(rect.RightHalf().LeftPart(0.8f), wealthThing.wealth.ToStringMoney());
-                        if (Widgets.ButtonInvisible(rect))
-                        {
-                            DefDatabase<MainButtonDef>.GetNamed("History").TabWindow.Close();
-                            CameraJumper.TryJumpAndSelect(wealthThing.thing);
-                        }
+                        //if (Widgets.ButtonInvisible(rect))
+                        //{
+                        //    DefDatabase<MainButtonDef>.GetNamed("History").TabWindow.Close();
+                        //    CameraJumper.TryJumpAndSelect(wealthThing.thing);
+                        //}
 
                         listing.Gap(2f);
                         highlight = !highlight;

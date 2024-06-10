@@ -1,12 +1,8 @@
 ﻿using HarmonyLib;
 using RimWorld;
-using RimWorld.Planet;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using Verse;
-using YinMu.Source.ShowTrade;
 
 namespace YinMu.Source
 {
@@ -79,7 +75,8 @@ namespace YinMu.Source
         private static void RotStageChanged(Corpse __instance)
         {
             /**
-             * Corpse:尸体 Rot:腐烂
+             * Corpse:尸体 Rot
+             * :腐烂
              */
             foreach (var apparel in __instance.InnerPawn.apparel.WornApparel)
             {
@@ -102,69 +99,31 @@ namespace YinMu.Source
             return false;
         }
 
+        private static readonly float iconWith = 24f;
+
         /// <summary>
-        /// Settlement:定居点 Gizmos：小控件
+        /// 商队贸易界面蓝图显示应用情况
         /// </summary>
+        /// <param name="trad"></param>
+        /// <param name="rect"></param>
+        /// <param name="curX"></param>
         [HarmonyPostfix]
-        [HarmonyPatch(typeof(Settlement), nameof(Settlement.GetGizmos))]
-        private static void GetGizmos(Settlement __instance, ref IEnumerable<Gizmo> __result)
+        [HarmonyPatch(typeof(TransferableUIUtility), nameof(TransferableUIUtility.DoExtraIcons))]
+        private static void DoExtraIcons(Transferable trad, Rect rect, ref float curX)
         {
-            //Colonists:殖民者
-            if (__instance.CanTradeNow && !__instance.Faction.def.permanentEnemy)
+            var techThing = trad.AnyThing.TryGetComp<CompTechprint>();
+            if (techThing != null)
             {
-                //__result.AddItem没有用
-                List<Gizmo> list = __result.ToList();
-                list.Add(new Command_Action
+                Rect rect1 = new Rect(curX - iconWith, (rect.height - iconWith) / 2, iconWith, iconWith);
+                GUI.DrawTexture(rect1, ContentFinder<Texture2D>.Get("Things/Item/Special/TechprintUltratech"));
+                if (Mouse.IsOver(rect1))
                 {
-                    defaultLabel = "CommandShowSettlementGoods".Translate(),
-                    defaultDesc = "CommandShowSettlementGoodsDesc".Translate(),
-                    icon = Settlement.ShowSellableItemsCommand,
-                    action = () =>
-                    {
-                        //寻找在此部落协商最成功的小人
-                        Pawn negotiator = null;
-                        float num = 0f;
-                        //基地
-                        foreach (Map map in Find.Maps.Where(m => m.ParentFaction == Faction.OfPlayer))
-                        {
-                            foreach (Pawn pawn in map.mapPawns.FreeColonistsSpawned)
-                            {
-                                if (pawn.IsColonist && !pawn.WorkTagIsDisabled(WorkTags.Social))
-                                {
-                                    float statValue = StatExtension.GetStatValue(pawn, StatDefOf.TradePriceImprovement, true, -1);
-                                    if (statValue > num)
-                                    {
-                                        num = statValue;
-                                        negotiator = pawn;
-                                    }
-                                }
-                            }
-                        }
-                        //远行队
-                        foreach (Caravan caravan in Find.WorldObjects.Caravans.Where(c => c.Faction == Faction.OfPlayer))
-                        {
-                            foreach (Pawn pawn in caravan.PawnsListForReading)
-                            {
-                                if (pawn.IsColonist && !pawn.WorkTagIsDisabled(WorkTags.Social))
-                                {
-                                    float statValue2 = StatExtension.GetStatValue(pawn, StatDefOf.TradePriceImprovement, true, -1);
-                                    if (statValue2 > num)
-                                    {
-                                        num = statValue2;
-                                        negotiator = pawn;
-                                    }
-                                }
-                            }
-                        }
-                        Find.WindowStack.Add(new Dialog_TradeableGoods(__instance, negotiator));
-                        RoyalTitleDef titleRequiredToTrade = __instance.TraderKind.TitleRequiredToTrade;
-                        if (titleRequiredToTrade != null)
-                        {
-                            TutorUtility.DoModalDialogIfNotKnown(ConceptDefOf.TradingRequiresPermit, titleRequiredToTrade.GetLabelCapForBothGenders());
-                        }
-                    }
-                });
-                __result = list;
+                    Widgets.DrawHighlight(rect1);
+                    TooltipHandler.TipRegion(rect1, "ShowKnownTechprints.Tooltip".
+                        Translate(techThing.Props.project.TechprintCount.ToString(),
+                        techThing.Props.project.TechprintsApplied.ToString()));
+                }
+                curX -= iconWith;
             }
         }
     }

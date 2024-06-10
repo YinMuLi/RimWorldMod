@@ -45,16 +45,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Source\Extensions.cs" />
     <Compile Include="Source\modEntry.cs" />
+    <Compile Include="Source\ShowTrade\ShowTradeablePatch.cs" />
     <Compile Include="Source\ShowTrade\TradeableGroup.cs" />
     <Compile Include="Source\SimplePatch.cs" />
     <Compile Include="Source\ShowTrade\Dialog_TradeableGoods.cs" />
     <Compile Include="Source\WealthList\HistoryTabPatch.cs" />
     <Compile Include="Source\WealthList\WealthThingGroup.cs" />
-  </ItemGroup>
-  <ItemGroup />
-  <ItemGroup>
-    <Content Include="About\About.xml" />
-    <Content Include="Languages\ChineseSimplified\Keyed\TradeableItems.xml" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Krafs.Rimworld.Ref">
@@ -69,6 +65,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Languages\ChineseSimplified\Keyed\Keys.xml" />
+    <Content Include="Languages\ChineseSimplified\Keyed\TradeableItems.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
