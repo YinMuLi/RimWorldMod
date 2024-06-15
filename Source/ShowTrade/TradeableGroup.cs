@@ -16,7 +16,7 @@ namespace YinMu.Source.ShowTrade
 
         public TradeableGroup(ThingCategoryDef def, List<Tradeable> tradeables)
         {
-            list.AddRange(tradeables.Where(tr => tr.Is(def)));
+            list.AddRange(tradeables.Where(tr => tr.ThingDef.IsWithinCategory(def)));
             name = def.LabelCap;
         }
     }

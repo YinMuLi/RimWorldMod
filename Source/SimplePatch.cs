@@ -23,9 +23,9 @@ namespace YinMu.Source
             {
                 switch (mode)
                 {
-                    case DestroyMode.Deconstruct://拆除
+                    case DestroyMode.Deconstruct://拆除（不包括移除地板）
                     case DestroyMode.FailConstruction://建造失败
-                    case DestroyMode.KillFinalize://完全摧毁
+                    case DestroyMode.KillFinalize://完全摧毁？？
                         //用的环世界源代码写法
                         __result = (int count) => GenMath.RoundRandom((float)count * 1f);
                         break;
@@ -78,9 +78,12 @@ namespace YinMu.Source
              * Corpse:尸体 Rot
              * :腐烂
              */
-            foreach (var apparel in __instance.InnerPawn.apparel.WornApparel)
+            if (__instance.InnerPawn.apparel != null)
             {
-                apparel.Notify_PawnKilled();
+                foreach (var apparel in __instance.InnerPawn.apparel.WornApparel)
+                {
+                    apparel.Notify_PawnKilled();
+                }
             }
         }
 
@@ -99,10 +102,10 @@ namespace YinMu.Source
             return false;
         }
 
-        private static readonly float iconWith = 24f;
+        private static readonly float with = 24f;
 
         /// <summary>
-        /// 商队贸易界面蓝图显示应用情况
+        /// 商队贸易界面显示科技蓝图需求情况
         /// </summary>
         /// <param name="trad"></param>
         /// <param name="rect"></param>
@@ -114,16 +117,33 @@ namespace YinMu.Source
             var techThing = trad.AnyThing.TryGetComp<CompTechprint>();
             if (techThing != null)
             {
-                Rect rect1 = new Rect(curX - iconWith, (rect.height - iconWith) / 2, iconWith, iconWith);
-                GUI.DrawTexture(rect1, ContentFinder<Texture2D>.Get("Things/Item/Special/TechprintUltratech"));
+                Rect rect1 = new Rect(curX - with, (rect.height - with) / 2, with, with);
+                var res = techThing.Props.project.TechprintCount - techThing.Props.project.TechprintsApplied;
+                Text.Anchor = TextAnchor.MiddleCenter;
+                Widgets.Label(rect1, res.ToString().Colorize(Color.cyan));
                 if (Mouse.IsOver(rect1))
                 {
                     Widgets.DrawHighlight(rect1);
-                    TooltipHandler.TipRegion(rect1, "ShowKnownTechprints.Tooltip".
-                        Translate(techThing.Props.project.TechprintCount.ToString(),
-                        techThing.Props.project.TechprintsApplied.ToString()));
                 }
-                curX -= iconWith;
+                curX -= with;
+            }
+        }
+
+        /// <summary>
+        /// 自动砍伐树桩
+        /// </summary>
+        /// <param name="__instance"></param>
+        /// <param name="treeDestructionMode"></param>
+        /// <param name="__result"></param>
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(Plant), nameof(Plant.TrySpawnStump))]
+        private static void TrySpawnStump(Plant __instance, PlantDestructionMode treeDestructionMode, Thing __result)
+        {
+            if (__result != null && treeDestructionMode == PlantDestructionMode.Chop &&
+                ModSettings.Instance.autoChopStumps
+                )
+            {
+                __instance.Map.designationManager.AddDesignation(new Designation(__result, DesignationDefOf.HarvestPlant));
             }
         }
     }

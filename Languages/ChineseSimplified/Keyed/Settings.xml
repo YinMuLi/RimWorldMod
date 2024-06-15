@@ -1,0 +1,5 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+	<Settings.AutoChopStumps>砍一棵树</Settings.AutoChopStumps>
+	<Settings.AutoChopStumpsDesc>伐木时会自动砍伐剩下的树桩</Settings.AutoChopStumpsDesc>
+</LanguageData>
