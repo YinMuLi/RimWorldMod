@@ -17,6 +17,11 @@ namespace YinMu.Source
         //--------------------------------------------//
         public SettingHandle<bool> autoChopStumps;//自动砍伐树桩
 
+        /// <summary>
+        /// spoils:战利品
+        /// </summary>
+        public SettingHandle<bool> betterSpoils;
+
         private ModSettings()
         {
             Instance = this;
@@ -30,6 +35,11 @@ namespace YinMu.Source
                 "Settings.AutoChopStumps".Translate(),
                 "Settings.AutoChopStumpsDesc".Translate(), true
                 );
+            betterSpoils = Settings.GetHandle<bool>(
+               "betterSpoils",
+               "Settings.BetterSpoils".Translate(),
+               "Settings.BetterSpoilsDesc".Translate(), true
+               );
         }
     }
 }

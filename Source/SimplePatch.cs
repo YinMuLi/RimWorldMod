@@ -52,7 +52,8 @@ namespace YinMu.Source
             /**
              * Apparel:衣物 worn:穿
              */
-            if (dinfo.HasValue && dinfo.Value.Def.ExternalViolenceFor(__instance.pawn))
+
+            if (ModSettings.Instance.betterSpoils && dinfo.HasValue && dinfo.Value.Def.ExternalViolenceFor(__instance.pawn))
             {
                 var wornApparel = __instance.WornApparel;
                 for (int i = 0; i < wornApparel.Count; i++)
@@ -63,8 +64,9 @@ namespace YinMu.Source
                         wornApparel[i].TakeDamage(new DamageInfo(dinfo.Value.Def, num));
                     }
                 }
+                return false;
             }
-            return false;
+            return true;
         }
 
         /// <summary>
@@ -78,7 +80,7 @@ namespace YinMu.Source
              * Corpse:尸体 Rot
              * :腐烂
              */
-            if (__instance.InnerPawn.apparel != null)
+            if (ModSettings.Instance.betterSpoils && __instance.InnerPawn.apparel != null)
             {
                 foreach (var apparel in __instance.InnerPawn.apparel.WornApparel)
                 {
