@@ -12,6 +12,7 @@
 - 商队贸易界面蓝图显示应用情况（Show Known Techprints-显示已知科研蓝图）
 - 自动砍伐树桩（AutoCutStumps）
 - 建立因为温度腐化的分类（Bad Meat Category）
+- 显示伤害（DamageIndicators）
 ## TODO
 
 - 能够卸载重新安装所有建筑物(MinifyEverything)

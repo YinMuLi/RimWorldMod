@@ -3,6 +3,7 @@ using RimWorld;
 using System;
 using UnityEngine;
 using Verse;
+using static Verse.DamageWorker;
 
 namespace YinMu.Source
 {
@@ -140,5 +141,51 @@ namespace YinMu.Source
                 __instance.Map.designationManager.AddDesignation(new Designation(__result, DesignationDefOf.HarvestPlant));
             }
         }
+
+        #region 显示伤害
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(Thing), nameof(Thing.TakeDamage))]
+        private static void TakeDamage(Thing __instance, DamageInfo dinfo, DamageResult __result)
+        {
+            float damage = __result.totalDamageDealt;
+            if (damage > 0.01f && __instance.Map != null && __instance.Map != null &&
+                ShouldDisplayDamageInfo(__instance, dinfo.Instigator))
+            {
+                EmitDamageMote(damage, __instance.Map, __instance.DrawPos, damage.ToString("F0"));
+            }
+        }
+
+        private static bool ShouldDisplayDamageInfo(Thing target, Thing instigator)
+        {
+            //instigator:煽动者
+            //TODO:伤害的显示条件
+            if (target is Pawn && instigator is Pawn)
+            {
+                //目前只显示小人或动物对小人或动物的伤害 pawn：小人或动物
+                return true;
+            }
+            return false;
+        }
+
+        private static void EmitDamageMote(float damage, Map map, Vector3 loc, string text)
+        {
+            Color color = Color.white;
+            //Determine colour
+            if (damage >= 90f)
+                color = Color.cyan;
+            else if (damage >= 70f)
+                color = Color.magenta;
+            else if (damage >= 50f)
+                color = Color.red;
+            else if (damage >= 30f)
+                color = Color.Lerp(Color.red, Color.yellow, 0.5f);//orange
+            else if (damage >= 10f)
+                color = Color.yellow;
+
+            MoteMaker.ThrowText(loc, map, text, color, 2.2f);
+        }
+
+        #endregion 显示伤害
     }
 }
