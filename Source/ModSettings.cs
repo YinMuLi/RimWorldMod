@@ -7,14 +7,8 @@ namespace YinMu.Source
     /// <summary>
     /// 模组的设置暂时这么写
     /// </summary>
-    internal class ModSettings : ModBase
+    internal class ModSettings
     {
-        protected override bool HarmonyAutoPatch => false;
-        public static ModSettings Instance { get; private set; }
-
-        public override string ModIdentifier => "YinMu";
-
-        //--------------------------------------------//
         public SettingHandle<bool> autoChopStumps;//自动砍伐树桩
 
         /// <summary>
@@ -22,23 +16,17 @@ namespace YinMu.Source
         /// </summary>
         public SettingHandle<bool> betterSpoils;
 
-        private ModSettings()
+        public void Read(ModSettingsPack pack)
         {
-            Instance = this;
-        }
-
-        public override void DefsLoaded()
-        {
-            if (!ModIsActive) return;
-            autoChopStumps = Settings.GetHandle<bool>(
-                "autoChopStumps",
-                "Settings.AutoChopStumps".Translate(),
-                "Settings.AutoChopStumpsDesc".Translate(), true
-                );
-            betterSpoils = Settings.GetHandle<bool>(
+            autoChopStumps = pack.GetHandle(
+               "autoChopStumps",
+               "ModSettings.AutoChopStumps".Translate(),
+               "ModSettings.AutoChopStumpsDesc".Translate(), true
+               );
+            betterSpoils = pack.GetHandle(
                "betterSpoils",
-               "Settings.BetterSpoils".Translate(),
-               "Settings.BetterSpoilsDesc".Translate(), true
+               "ModSettings.BetterSpoils".Translate(),
+               "ModSettings.BetterSpoilsDesc".Translate(), true
                );
         }
     }

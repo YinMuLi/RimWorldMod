@@ -33,13 +33,6 @@ namespace YinMu.Source
             }
         }
 
-        /// <summary>
-        /// 植物不会得枯萎病,虽然会有黄色通知
-        /// </summary>
-        [HarmonyPrefix]
-        [HarmonyPatch(typeof(Plant), nameof(Plant.CropBlighted))]
-        private static bool CropBlighted() => false;
-
         #region 尸体腐烂小人穿的衣服才会有“已亡”
 
         /// <summary>
@@ -53,7 +46,7 @@ namespace YinMu.Source
              * Apparel:衣物 worn:穿
              */
 
-            if (ModSettings.Instance.betterSpoils && dinfo.HasValue && dinfo.Value.Def.ExternalViolenceFor(__instance.pawn))
+            if (ModEntry.Instance.Handles.betterSpoils && dinfo.HasValue && dinfo.Value.Def.ExternalViolenceFor(__instance.pawn))
             {
                 var wornApparel = __instance.WornApparel;
                 for (int i = 0; i < wornApparel.Count; i++)
@@ -80,7 +73,7 @@ namespace YinMu.Source
              * Corpse:尸体 Rot
              * :腐烂
              */
-            if (ModSettings.Instance.betterSpoils && __instance.InnerPawn.apparel != null)
+            if (ModEntry.Instance.Handles.betterSpoils && __instance.InnerPawn.apparel != null)
             {
                 foreach (var apparel in __instance.InnerPawn.apparel.WornApparel)
                 {
@@ -142,8 +135,7 @@ namespace YinMu.Source
         private static void TrySpawnStump(Plant __instance, PlantDestructionMode treeDestructionMode, Thing __result)
         {
             if (__result != null && treeDestructionMode == PlantDestructionMode.Chop &&
-                ModSettings.Instance.autoChopStumps
-                )
+                ModEntry.Instance.Handles.autoChopStumps)
             {
                 __instance.Map.designationManager.AddDesignation(new Designation(__result, DesignationDefOf.HarvestPlant));
             }
