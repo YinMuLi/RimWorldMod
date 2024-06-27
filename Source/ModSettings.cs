@@ -20,13 +20,13 @@ namespace YinMu.Source
         {
             autoChopStumps = pack.GetHandle(
                "autoChopStumps",
-               "ModSettings.AutoChopStumps".Translate(),
-               "ModSettings.AutoChopStumpsDesc".Translate(), true
+               "Settings.AutoChopStumps".Translate(),
+               "Settings.AutoChopStumpsDesc".Translate(), true
                );
             betterSpoils = pack.GetHandle(
                "betterSpoils",
-               "ModSettings.BetterSpoils".Translate(),
-               "ModSettings.BetterSpoilsDesc".Translate(), true
+               "Settings.BetterSpoils".Translate(),
+               "Settings.BetterSpoilsDesc".Translate(), true
                );
         }
     }

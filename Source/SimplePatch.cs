@@ -36,31 +36,14 @@ namespace YinMu.Source
 
         #region 尸体腐烂小人穿的衣服才会有“已亡”
 
-        /// <summary>
-        /// 去除击杀小人穿着衣物上的死亡标签
-        /// </summary>
-        [HarmonyPrefix]
-        [HarmonyPatch(typeof(Pawn_ApparelTracker), nameof(Pawn_ApparelTracker.Notify_PawnKilled))]
-        private static bool Notify_PawnKilled(Pawn_ApparelTracker __instance, DamageInfo? dinfo)
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(Apparel), nameof(Apparel.Notify_PawnKilled))]
+        private static void Notify_PawnKilled(Apparel __instance)
         {
-            /**
-             * Apparel:衣物 worn:穿
-             */
-
-            if (ModEntry.Instance.Handles.betterSpoils && dinfo.HasValue && dinfo.Value.Def.ExternalViolenceFor(__instance.pawn))
+            if (ModEntry.Instance.Handles.betterSpoils)
             {
-                var wornApparel = __instance.WornApparel;
-                for (int i = 0; i < wornApparel.Count; i++)
-                {
-                    if (wornApparel[i].def.useHitPoints)
-                    {
-                        int num = Mathf.RoundToInt((float)wornApparel[i].HitPoints * Rand.Range(0.15f, 0.4f));
-                        wornApparel[i].TakeDamage(new DamageInfo(dinfo.Value.Def, num));
-                    }
-                }
-                return false;
+                __instance.WornByCorpse = false;
             }
-            return true;
         }
 
         /// <summary>
@@ -76,9 +59,10 @@ namespace YinMu.Source
              */
             if (ModEntry.Instance.Handles.betterSpoils && __instance.InnerPawn.apparel != null)
             {
-                foreach (var apparel in __instance.InnerPawn.apparel.WornApparel)
+                var apparels = (ThingOwner<Apparel>)__instance.InnerPawn.apparel.GetDirectlyHeldThings();
+                for (int i = 0; i < apparels.Count; i++)
                 {
-                    apparel.Notify_PawnKilled();
+                    apparels[i].WornByCorpse = true;
                 }
             }
         }
@@ -149,10 +133,10 @@ namespace YinMu.Source
         private static void TakeDamage(Thing __instance, DamageInfo dinfo, DamageResult __result)
         {
             float damage = __result.totalDamageDealt;
-            if (damage > 0.01f && __instance.Map != null && __instance.Map != null &&
+            if (damage > 0.01f && __instance.Map != null &&
                 ShouldDisplayDamageInfo(__instance, dinfo.Instigator))
             {
-                EmitDamageMote(damage, __instance.Map, __instance.DrawPos, damage.ToString("F0"));
+                EmitDamageMote(damage, __instance.Map, __instance.DrawPos);
             }
         }
 
@@ -162,13 +146,13 @@ namespace YinMu.Source
             //TODO:伤害的显示条件
             if (target is Pawn && instigator is Pawn)
             {
-                //目前只显示小人或动物对小人或动物的伤害 pawn：小人或动物
+                //pawn：小人或动物
                 return true;
             }
             return false;
         }
 
-        private static void EmitDamageMote(float damage, Map map, Vector3 loc, string text)
+        private static void EmitDamageMote(float damage, Map map, Vector3 pos)
         {
             Color color = Color.white;
             //Determine colour
@@ -183,7 +167,7 @@ namespace YinMu.Source
             else if (damage >= 10f)
                 color = Color.yellow;
 
-            MoteMaker.ThrowText(loc, map, text, color, 2.2f);
+            MoteMaker.ThrowText(pos, map, damage.ToString("F0"), color, 2.2f);
         }
 
         #endregion 显示伤害

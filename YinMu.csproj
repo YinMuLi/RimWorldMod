@@ -71,7 +71,7 @@
     <Content Include="Defs\ThingCategories.xml" />
     <Content Include="Languages\ChineseSimplified\DefInjected\ThingCategoryDef\ThingCategories.xml" />
     <Content Include="Languages\ChineseSimplified\Keyed\Settings.xml" />
-    <Content Include="Languages\ChineseSimplified\Keyed\TradeableItems.xml" />
+    <Content Include="Languages\ChineseSimplified\Keyed\Others.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

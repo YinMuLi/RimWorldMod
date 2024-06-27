@@ -42,6 +42,7 @@ namespace YinMu.Source
                 //}
 
                 //不是尸体，有腐烂度
+                //TODO:动态创建新的分组，就用thingDef的分组名称
                 if (thingDef.HasComp<CompRottable>() && !thingDef.IsCorpse)
                 {
                     thingDef.thingCategories.Add(rot);
