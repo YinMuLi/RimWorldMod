@@ -1,5 +1,7 @@
 # RimWorldMod
-**对于RimWorld的UI部分我是一点都不想碰!!!**
+
+**对于 RimWorld 的 UI 部分我是一点都不想碰!!!**
+
 ## 实现功能
 
 - 建筑被完全摧毁，建造失败，拆除时返还全部材料
@@ -12,6 +14,12 @@
 - 自动砍伐树桩（AutoCutStumps）
 - 建立因为温度腐化的分类（Bad Meat Category）
 - 显示伤害（DamageIndicators）
+- 将任意石块切割成任意石砖，原版的内容的石砖（制作界面上的描述没有改，其实是不知道怎么改！）
+- 机械师控制机械无视范围（Unlimited Mechanitor Command Range）
+- 取消泰南语
+
 ## TODO
-- 任意石块制成任意砖
+
+- Safe Drug Policy Generator
+- Destroy clothing when butchering
 ## DEBUD

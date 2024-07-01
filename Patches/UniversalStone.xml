@@ -1,4 +1,132 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Patch>
+    <!-- 砂岩砖 -->
+    <Operation Class="PatchOperationSequence">
+        <operations>
+            <li Class="PatchOperationReplace">
+                <xpath>Defs/RecipeDef[defName="Make_StoneBlocksSandstone"]/ingredients/li/filter</xpath>
+                <value>
+                    <filter>
+                        <categories>
+                            <li>StoneChunks</li>
+                        </categories>
+                    </filter>
+                </value>
+            </li>
+            <li Class="PatchOperationReplace">
+                <xpath>Defs/RecipeDef[defName="Make_StoneBlocksSandstone"]/fixedIngredientFilter</xpath>
+                <value>
+                    <fixedIngredientFilter>
+                        <categories>
+                            <li>StoneChunks</li>
+                        </categories>
+                    </fixedIngredientFilter>
+                </value>
+            </li>
+        </operations>
+    </Operation>
 
+    <!-- 花岗岩 -->
+    <Operation Class="PatchOperationSequence">
+        <operations>
+            <li Class="PatchOperationReplace">
+                <xpath>Defs/RecipeDef[defName="Make_StoneBlocksGranite"]/ingredients/li/filter</xpath>
+                <value>
+                    <filter>
+                        <categories>
+                            <li>StoneChunks</li>
+                        </categories>
+                    </filter>
+                </value>
+            </li>
+            <li Class="PatchOperationReplace">
+                <xpath>Defs/RecipeDef[defName="Make_StoneBlocksGranite"]/fixedIngredientFilter</xpath>
+                <value>
+                    <fixedIngredientFilter>
+                        <categories>
+                            <li>StoneChunks</li>
+                        </categories>
+                    </fixedIngredientFilter>
+                </value>
+            </li>
+        </operations>
+    </Operation>
+
+    <!-- 石灰石 -->
+    <Operation Class="PatchOperationSequence">
+        <operations>
+            <li Class="PatchOperationReplace">
+                <xpath>Defs/RecipeDef[defName="Make_StoneBlocksLimestone"]/ingredients/li/filter</xpath>
+                <value>
+                    <filter>
+                        <categories>
+                            <li>StoneChunks</li>
+                        </categories>
+                    </filter>
+                </value>
+            </li>
+            <li Class="PatchOperationReplace">
+                <xpath>Defs/RecipeDef[defName="Make_StoneBlocksLimestone"]/fixedIngredientFilter</xpath>
+                <value>
+                    <fixedIngredientFilter>
+                        <categories>
+                            <li>StoneChunks</li>
+                        </categories>
+                    </fixedIngredientFilter>
+                </value>
+            </li>
+        </operations>
+    </Operation>
+
+    <!-- 板岩 -->
+    <Operation Class="PatchOperationSequence">
+        <operations>
+            <li Class="PatchOperationReplace">
+                <xpath>Defs/RecipeDef[defName="Make_StoneBlocksSlate"]/ingredients/li/filter</xpath>
+                <value>
+                    <filter>
+                        <categories>
+                            <li>StoneChunks</li>
+                        </categories>
+                    </filter>
+                </value>
+            </li>
+            <li Class="PatchOperationReplace">
+                <xpath>Defs/RecipeDef[defName="Make_StoneBlocksSlate"]/fixedIngredientFilter</xpath>
+                <value>
+                    <fixedIngredientFilter>
+                        <categories>
+                            <li>StoneChunks</li>
+                        </categories>
+                    </fixedIngredientFilter>
+                </value>
+            </li>
+        </operations>
+    </Operation>
+
+    <!-- 大理石（为什么主角最后登场） -->
+    <Operation Class="PatchOperationSequence">
+        <operations>
+            <li Class="PatchOperationReplace">
+                <xpath>Defs/RecipeDef[defName="Make_StoneBlocksMarble"]/ingredients/li/filter</xpath>
+                <value>
+                    <filter>
+                        <categories>
+                            <li>StoneChunks</li>
+                        </categories>
+                    </filter>
+                </value>
+            </li>
+            <li Class="PatchOperationReplace">
+                <xpath>Defs/RecipeDef[defName="Make_StoneBlocksMarble"]/fixedIngredientFilter</xpath>
+                <value>
+                    <fixedIngredientFilter>
+                        <categories>
+                            <li>StoneChunks</li>
+                        </categories>
+                    </fixedIngredientFilter>
+                </value>
+            </li>
+        </operations>
+    </Operation>
 </Patch>

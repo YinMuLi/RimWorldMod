@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using RimWorld;
+using RimWorld.Planet;
 using System;
 using UnityEngine;
 using Verse;
@@ -171,5 +172,51 @@ namespace YinMu.Source
         }
 
         #endregion 显示伤害
+
+        #region 机械师无视距离控制机器
+
+        //现在：机械师只是个培育机械的后勤人员了
+        //Mechanitor:机械控制器
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(Pawn_MechanitorTracker), nameof(Pawn_MechanitorTracker.CanCommandTo))]
+        private static bool CanCommandTo(ref bool __result)
+        {
+            __result = true;
+            return false;
+        }
+
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(Pawn_MechanitorTracker), nameof(Pawn_MechanitorTracker.DrawCommandRadius))]
+        private static bool DrawCommandRadius() => false;
+
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(MechanitorUtility), nameof(MechanitorUtility.InMechanitorCommandRange))]
+        private static bool InMechanitorCommandRange(ref bool __result)
+        {
+            __result = true;
+            return false;
+        }
+
+        //mechs:机械
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(Pawn_MechanitorTracker),
+            nameof(Pawn_MechanitorTracker.CanControlMechs), MethodType.Getter)]
+        private static void CanControlMechs(Pawn_MechanitorTracker __instance, ref AcceptanceReport __result)
+        {
+            if (!__result)
+            {
+                __result |= __instance.Pawn.IsCaravanMember();
+            }
+        }
+
+        #endregion 机械师无视距离控制机器
+
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(Translator), "PseudoTranslated")]
+        private static bool PseudoTranslated(string original, ref string __result)
+        {
+            __result = original;
+            return false;
+        }
     }
 }
