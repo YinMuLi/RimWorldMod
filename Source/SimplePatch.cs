@@ -223,6 +223,26 @@ namespace YinMu.Source
         [HarmonyPrefix]
         [HarmonyPatch(typeof(Pawn), nameof(Pawn.DropAndForbidEverything))]
         private static bool DropAndForbidEverything(Pawn __instance)
-            => !__instance.health.isBeingKilled;
+        {
+            if (__instance.Dead || __instance.Downed)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        #region 修改初始界面
+
+        //隐藏左侧翻译框（很感激翻译人员的！！）
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(MainMenuDrawer), nameof(MainMenuDrawer.DoTranslationInfoRect))]
+        private static bool DoTranslationInfoRect() => false;
+
+        //去除左下方DLC的信息
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(MainMenuDrawer), nameof(MainMenuDrawer.DoExpansionIcons))]
+        private static bool DoExpansionIcons() => false;
+
+        #endregion 修改初始界面
     }
 }
