@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using JetBrains.Annotations;
 using RimWorld;
 using RimWorld.Planet;
 using System;
@@ -218,5 +219,10 @@ namespace YinMu.Source
             __result = original;
             return false;
         }
+
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(Pawn), nameof(Pawn.DropAndForbidEverything))]
+        private static bool DropAndForbidEverything(Pawn __instance)
+            => !__instance.health.isBeingKilled;
     }
 }
