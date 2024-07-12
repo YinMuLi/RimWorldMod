@@ -3,6 +3,8 @@ using JetBrains.Annotations;
 using RimWorld;
 using RimWorld.Planet;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Verse;
 using static Verse.DamageWorker;
@@ -244,5 +246,41 @@ namespace YinMu.Source
         private static bool DoExpansionIcons() => false;
 
         #endregion 修改初始界面
+
+        //在允许活动区标签上ALT键+左/右键点击，快捷更改活动区域
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(PawnColumnWorker_AllowedArea), "HeaderClicked")]
+        private static void DoHeader(PawnTable table)
+        {
+            if (Event.current.alt && Find.CurrentMap != null)
+            {
+                List<FloatMenuOption> list = new List<FloatMenuOption>();
+                //无限制
+                list.Add(new FloatMenuOption("NoAreaAllowed".Translate(), () =>
+                {
+                    table.PawnsListForReading.ForEach(p =>
+                    {
+                        if (p.Faction == Faction.OfPlayer && p.playerSettings.SupportsAllowedAreas)
+                        {
+                            p.playerSettings.AreaRestrictionInPawnCurrentMap = null;
+                        }
+                    });
+                }));
+                foreach (var area in Find.CurrentMap.areaManager.AllAreas.Where(a => a.AssignableAsAllowed()))
+                {
+                    list.Add(new FloatMenuOption(area.Label, () =>
+                    {
+                        table.PawnsListForReading.ForEach(p =>
+                        {
+                            if (p.Faction == Faction.OfPlayer && p.playerSettings.SupportsAllowedAreas)
+                            {
+                                p.playerSettings.AreaRestrictionInPawnCurrentMap = area;
+                            }
+                        });
+                    }));
+                }
+                Find.WindowStack.Add(new FloatMenu(list));
+            }
+        }
     }
 }

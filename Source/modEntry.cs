@@ -31,8 +31,8 @@ namespace YinMu.Source
             var rot = DefDatabase<ThingCategoryDef>.GetNamed("RottableThing");
             foreach (var thingDef in DefDatabase<ThingDef>.AllDefs)
             {
-                //所有堆叠数大于一的物品存储容量*10
-                if (thingDef.stackLimit > 1) thingDef.stackLimit *= 10;
+                //所有堆叠数大于一的物品存储容量*10（SOS2不太够用）
+                if (thingDef.stackLimit > 1) thingDef.stackLimit *= 50;
                 //水培种植所有 条件：能种在地上，不是树木
                 //if (thingDef.plant != null && !thingDef.plant.IsTree &&
                 //    !thingDef.plant.sowTags.Contains("Hydroponic") &&

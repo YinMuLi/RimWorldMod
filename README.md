@@ -18,6 +18,7 @@
 - 机械师控制机械无视范围（Unlimited Mechanitor Command Range）
 - 取消泰南语
 - 小人死亡不掉落物品（实验）
+- 在允许活动区标签上ALT键+左/右键点击，快捷更改活动区域
 
 ## TODO
 
