@@ -33,14 +33,6 @@ namespace YinMu.Source
             {
                 //所有堆叠数大于一的物品存储容量*10（SOS2不太够用）
                 if (thingDef.stackLimit > 1) thingDef.stackLimit *= 50;
-                //水培种植所有 条件：能种在地上，不是树木
-                //if (thingDef.plant != null && !thingDef.plant.IsTree &&
-                //    !thingDef.plant.sowTags.Contains("Hydroponic") &&
-                //    thingDef.plant.sowTags.Contains("Ground"))
-                //{
-                //    thingDef.plant.sowTags.Add("Hydroponic");
-                //}
-
                 //不是尸体，有腐烂度
                 //TODO:动态创建新的分组，就用thingDef的分组名称
                 if (thingDef.HasComp<CompRottable>() && !thingDef.IsCorpse)
