@@ -282,17 +282,5 @@ namespace YinMu.Source
                 Find.WindowStack.Add(new FloatMenu(list));
             }
         }
-
-        //在制作衣物列表显示衣物的覆盖层
-        [HarmonyPostfix]
-        [HarmonyPatch(typeof(Def), nameof(Def.LabelCap), MethodType.Getter)]
-        private static void LabelCap(ref TaggedString __result, Def __instance)
-        {
-            if (__instance is RecipeDef recipe && recipe.ProducedThingDef.IsApparel)
-            {
-                __result += $" [{recipe.ProducedThingDef.apparel.GetLayersString()}]"
-                    .Colorize(Color.cyan);
-            }
-        }
     }
 }

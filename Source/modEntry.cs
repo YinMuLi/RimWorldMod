@@ -1,5 +1,6 @@
 ﻿using HugsLib;
 using RimWorld;
+using UnityEngine;
 using Verse;
 
 namespace YinMu.Source
@@ -43,6 +44,16 @@ namespace YinMu.Source
             }
             rot.ClearCachedData();
             rot.ResolveReferences();
+            //配方
+            foreach (var recipe in DefDatabase<RecipeDef>.AllDefs)
+            {
+                //在制作衣物列表显示衣物的覆盖层
+                if (recipe.ProducedThingDef?.IsApparel ?? false)
+                {
+                    recipe.label += $" [{recipe.ProducedThingDef.apparel.GetLayersString()}]"
+                        .Colorize(Color.cyan);
+                }
+            }
         }
     }
 }
