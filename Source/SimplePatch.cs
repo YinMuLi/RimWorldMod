@@ -214,23 +214,13 @@ namespace YinMu.Source
 
         #endregion 机械师无视距离控制机器
 
+        //不显示泰南语
         [HarmonyPrefix]
         [HarmonyPatch(typeof(Translator), "PseudoTranslated")]
         private static bool PseudoTranslated(string original, ref string __result)
         {
             __result = original;
             return false;
-        }
-
-        [HarmonyPrefix]
-        [HarmonyPatch(typeof(Pawn), nameof(Pawn.DropAndForbidEverything))]
-        private static bool DropAndForbidEverything(Pawn __instance)
-        {
-            if (__instance.Dead || __instance.Downed)
-            {
-                return false;
-            }
-            return true;
         }
 
         #region 修改初始界面
