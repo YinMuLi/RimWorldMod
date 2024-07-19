@@ -1,7 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <LanguageData>
-	<Settings.AutoChopStumps>砍一棵树</Settings.AutoChopStumps>
-	<Settings.AutoChopStumpsDesc>伐木时会自动砍伐剩下的树桩。</Settings.AutoChopStumpsDesc>
-	<Settings.BetterSpoils>更好的战利品</Settings.BetterSpoils>
-	<Settings.BetterSpoilsDesc>小人死亡时剥光下来的衣服不会有死亡标签，只有在腐化时才会有。</Settings.BetterSpoilsDesc>
+	<AutoChopStumps>砍一棵树</AutoChopStumps>
+	<AutoChopStumpsDesc>伐木时会自动砍伐剩下的树桩。</AutoChopStumpsDesc>
+	<BetterSpoils>更好的战利品</BetterSpoils>
+	<BetterSpoilsDesc>小人死亡时剥光下来的衣服不会有死亡标签，只有在腐化时才会有。</BetterSpoilsDesc>
+	<AutoResearch>自动研究</AutoResearch>
+	<AutoResearchDesc>当前无可研究对象时，会自动研究下一个可研究对象</AutoResearchDesc>
 </LanguageData>

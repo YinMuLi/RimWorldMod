@@ -1,5 +1,6 @@
 ﻿using HugsLib;
 using RimWorld;
+using System.Linq;
 using UnityEngine;
 using Verse;
 
@@ -53,6 +54,18 @@ namespace YinMu.Source
                     recipe.label += $" [{recipe.ProducedThingDef.apparel.GetLayersString()}]"
                         .Colorize(Color.cyan);
                 }
+            }
+        }
+
+        public override void Tick(int currentTick)
+        {
+            //TODO: 增加检测间隔
+            if (Handles.autoResearch && Find.ResearchManager.GetProject() == null)
+            {
+                //当前研究项目为空，查找随机可以研究的项目
+                var project = (DefDatabase<ResearchProjectDef>.AllDefs
+                    .Where(p => p.CanStartNow)).RandomElement();
+                Find.ResearchManager.SetCurrentProject(project);
             }
         }
     }

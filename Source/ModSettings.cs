@@ -9,6 +9,7 @@ namespace YinMu.Source
     internal class ModSettings
     {
         public SettingHandle<bool> autoChopStumps;//自动砍伐树桩
+        public SettingHandle<bool> autoResearch;//自动研究
 
         /// <summary>
         /// spoils:战利品
@@ -18,15 +19,20 @@ namespace YinMu.Source
         public void Read(ModSettingsPack pack)
         {
             autoChopStumps = pack.GetHandle(
-               "autoChopStumps",
-               "Settings.AutoChopStumps".Translate(),
-               "Settings.AutoChopStumpsDesc".Translate(), true
+               "AutoChopStumps",
+               "AutoChopStumps".Translate(),
+               "AutoChopStumpsDesc".Translate(), true
                );
             betterSpoils = pack.GetHandle(
-               "betterSpoils",
-               "Settings.BetterSpoils".Translate(),
-               "Settings.BetterSpoilsDesc".Translate(), true
+               "BetterSpoils",
+               "BetterSpoils".Translate(),
+               "BetterSpoilsDesc".Translate(), true
                );
+            autoResearch = pack.GetHandle(
+             "AutoResearch",
+             "AutoResearch".Translate(),
+             "AutoResearchDesc".Translate(), true
+             );
         }
     }
 }
