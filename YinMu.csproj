@@ -43,7 +43,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Source\ArrestHere\Comp_Imprisonment.cs" />
+    <Compile Include="Source\ArrestHere\ImprisonPatch.cs" />
+    <Compile Include="Source\ArrestHere\JobDriver_ImprisonInPlace.cs" />
     <Compile Include="Source\Extensions.cs" />
+    <Compile Include="Source\ModDefOf.cs" />
     <Compile Include="Source\ModEntry.cs" />
     <Compile Include="Source\ModSettings.cs" />
     <Compile Include="Source\ShowTrade\ShowTradeablePatch.cs" />
@@ -68,11 +72,14 @@
     <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Defs\JobDefs\Jobs_Work.xml" />
     <Content Include="Defs\ThingCategories.xml" />
+    <Content Include="Languages\ChineseSimplified\DefInjected\JobDef\Jobs_Work.xml" />
     <Content Include="Languages\ChineseSimplified\DefInjected\ThingCategoryDef\ThingCategories.xml" />
     <Content Include="Languages\ChineseSimplified\Keyed\Settings.xml" />
-    <Content Include="Languages\ChineseSimplified\Keyed\Others.xml" />
+    <Content Include="Languages\ChineseSimplified\Keyed\Misc.xml" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <LangVersion>preview</LangVersion>

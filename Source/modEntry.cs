@@ -3,6 +3,7 @@ using RimWorld;
 using System.Linq;
 using UnityEngine;
 using Verse;
+using YinMu.Source.ArrestHere;
 
 namespace YinMu.Source
 {
@@ -24,6 +25,11 @@ namespace YinMu.Source
         public override void EarlyInitialize()
         {
             Handles = new ModSettings();
+            foreach (var pawn in DefDatabase<ThingDef>
+                .AllDefs.Where(t => t.race?.Humanlike ?? false))
+            {
+                pawn.comps.Add(new CompProperties_Imprisonment());
+            }
         }
 
         public override void DefsLoaded()
@@ -65,7 +71,7 @@ namespace YinMu.Source
                 //当前研究项目为空，查找随机可以研究的项目
                 var project = (DefDatabase<ResearchProjectDef>.AllDefs
                     .Where(p => p.CanStartNow)).RandomElement();
-                Find.ResearchManager.SetCurrentProject(project);
+                if (project != null) Find.ResearchManager.SetCurrentProject(project);
             }
         }
     }

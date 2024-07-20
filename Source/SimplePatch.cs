@@ -1,5 +1,4 @@
 ﻿using HarmonyLib;
-using HugsLib.Utils;
 using RimWorld;
 using RimWorld.Planet;
 using System;
@@ -176,7 +175,7 @@ namespace YinMu.Source
 
         #endregion 显示伤害
 
-        #region 机械师无视距离控制机器
+        #region 机械师无视距离控制机器（不过我也不怎么玩机械师）
 
         //现在：机械师只是个培育机械的后勤人员了
         //Mechanitor:机械控制器
@@ -212,7 +211,7 @@ namespace YinMu.Source
             }
         }
 
-        #endregion 机械师无视距离控制机器
+        #endregion 机械师无视距离控制机器（不过我也不怎么玩机械师）
 
         //不显示泰南语
         [HarmonyPrefix]
@@ -223,19 +222,19 @@ namespace YinMu.Source
             return false;
         }
 
-        #region 修改初始界面
+        #region 简化游戏初始界面
 
         //隐藏左侧翻译框（很感激翻译人员的！！）
         [HarmonyPrefix]
         [HarmonyPatch(typeof(MainMenuDrawer), nameof(MainMenuDrawer.DoTranslationInfoRect))]
         private static bool DoTranslationInfoRect() => false;
 
-        //去除左下方DLC的信息
+        //隐藏左下方DLC的信息
         [HarmonyPrefix]
         [HarmonyPatch(typeof(MainMenuDrawer), nameof(MainMenuDrawer.DoExpansionIcons))]
         private static bool DoExpansionIcons() => false;
 
-        #endregion 修改初始界面
+        #endregion 简化游戏初始界面
 
         //在允许活动区标签上ALT键+左/右键点击，快捷更改活动区域
         [HarmonyPostfix]

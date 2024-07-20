@@ -17,11 +17,11 @@
 - 将任意石块切割成任意石砖，原版的内容的石砖（制作界面上的描述没有改，其实是不知道怎么改！）
 - 机械师控制机械无视范围（Unlimited Mechanitor Command Range）
 - 取消泰南语
-- 小人死亡不掉落物品（实验）
 - 在允许活动区标签上ALT键+左/右键点击，快捷更改活动区域
 - 在制作衣物列表显示衣物的覆盖层
+- 自动研究
+- 简化游戏初始界面
+- 就地逮捕（ArrestHere）
 ## TODO
 
-- Safe Drug Policy Generator
-- Destroy clothing when butchering
 ## DEBUD
