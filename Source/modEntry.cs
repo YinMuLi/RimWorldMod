@@ -25,6 +25,10 @@ namespace YinMu.Source
         public override void EarlyInitialize()
         {
             Handles = new ModSettings();
+        }
+
+        public override void StaticInitialize()
+        {
             foreach (var pawn in DefDatabase<ThingDef>
                 .AllDefs.Where(t => t.race?.Humanlike ?? false))
             {

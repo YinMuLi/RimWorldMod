@@ -37,20 +37,21 @@ namespace YinMu.Source.ArrestHere
             {
                 if (job.def.makeTargetPrisoner)
                 {
-                    pawn.GetLord()?.Notify_PawnAttemptArrested(prisoner);
+                    //通知即将逮捕的囚犯派系，囚犯被玩家逮捕
+                    prisoner.GetLord()?.Notify_PawnAttemptArrested(prisoner);
                     //Clamor：叫嚷
-                    GenClamor.DoClamor(pawn, 10f, ClamorDefOf.Harm);
-                    if (!pawn.IsPrisoner)
+                    GenClamor.DoClamor(prisoner, 10f, ClamorDefOf.Harm);
+                    if (!prisoner.IsPrisoner)
                     {
                         //逮捕
-                        QuestUtility.SendQuestTargetSignals(pawn.questTags, "Arrested", pawn.Named("SUBJECT"));
+                        QuestUtility.SendQuestTargetSignals(prisoner.questTags, "Arrested", prisoner.Named("SUBJECT"));
                     }
-                    if (!pawn.CheckAcceptArrest(pawn))
+                    if (!prisoner.CheckAcceptArrest(pawn))
                     {
                         //Incompletable：不可完成的
                         pawn.jobs.EndCurrentJob(JobCondition.Incompletable);
                     }
-                    else
+                    else if (!prisoner.Downed)
                     {
                         //逮捕成功
                         prisoner.jobs.StopAll();
@@ -64,8 +65,8 @@ namespace YinMu.Source.ArrestHere
             Toil progressToil = Toils_General.Wait(ImprisonDurationTicks);
             progressToil.WithProgressBarToilDelay(TargetIndex.A, true);
             yield return progressToil;
+            Toils_General.Do(CheckMakeTakeeGuest);
             Toil toil = new Toil();
-            toil.AddPreInitAction(CheckMakeTakeeGuest);
             toil.initAction = delegate
             {
                 CheckMakeTakeePrisoner();

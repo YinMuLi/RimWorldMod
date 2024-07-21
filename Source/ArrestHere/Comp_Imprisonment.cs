@@ -7,7 +7,7 @@ using Verse;
 
 namespace YinMu.Source.ArrestHere
 {
-    internal class CompProperties_Imprisonment : CompProperties
+    public class CompProperties_Imprisonment : CompProperties
     {
         public CompProperties_Imprisonment()
         {
@@ -15,7 +15,7 @@ namespace YinMu.Source.ArrestHere
         }
     }
 
-    internal class Comp_Imprisonment : ThingComp
+    public class Comp_Imprisonment : ThingComp
     {
         public int lastTryingEscapeTick;
 
