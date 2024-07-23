@@ -29,11 +29,11 @@ namespace YinMu.Source
 
         public override void StaticInitialize()
         {
-            foreach (var pawn in DefDatabase<ThingDef>
-                .AllDefs.Where(t => t.race?.Humanlike ?? false))
-            {
-                pawn.comps.Add(new CompProperties_Imprisonment());
-            }
+            //foreach (var pawn in DefDatabase<ThingDef>
+            //    .AllDefs.Where(t => t.race?.Humanlike ?? false))
+            //{
+            //    pawn.comps.Add(new CompProperties_Imprisonment());
+            //}
         }
 
         public override void DefsLoaded()

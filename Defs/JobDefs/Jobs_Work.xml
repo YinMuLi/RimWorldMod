@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Defs>
-	<JobDef>
+	<!--<JobDef>
 		<defName>ImprisonInPlace</defName>
 		<driverClass>YinMu.Source.ArrestHere.JobDriver_ImprisonInPlace</driverClass>
 		<reportString>imprisoning TargetA.</reportString>
 		<alwaysShowWeapon>true</alwaysShowWeapon>
 		<makeTargetPrisoner>true</makeTargetPrisoner>
 		<casualInterruptible>false</casualInterruptible>
-	</JobDef>
+	</JobDef>-->
 </Defs>

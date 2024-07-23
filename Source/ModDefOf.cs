@@ -11,6 +11,6 @@ namespace YinMu.Source
     [DefOf]
     public static class ModDefOf
     {
-        public static JobDef ImprisonInPlace;
+        //public static JobDef ImprisonInPlace;
     }
 }
