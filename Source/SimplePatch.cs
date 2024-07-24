@@ -271,5 +271,29 @@ namespace YinMu.Source
                 Find.WindowStack.Add(new FloatMenu(list));
             }
         }
+
+        #region 删减开局管理中的一些没用配置
+
+        //食物
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(FoodRestrictionDatabase), "GenerateStartingFoodRestrictions")]
+        private static bool GenerateStartingFoodRestrictions(FoodRestrictionDatabase __instance)
+        {
+            __instance.MakeNewFoodRestriction().label = "FoodRestrictionLavish".Translate();
+            return false;
+        }
+
+        //穿着
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(OutfitDatabase), "GenerateStartingOutfits")]
+        private static bool GenerateStartingOutfits(OutfitDatabase __instance)
+        {
+            __instance.MakeNewOutfit().label = "OutfitAnything".Translate();
+            return false;
+        }
+
+        //成瘾品的配置是写在XML中的
+
+        #endregion 删减开局管理中的一些没用配置
     }
 }

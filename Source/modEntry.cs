@@ -1,9 +1,9 @@
 ﻿using HugsLib;
 using RimWorld;
+using System.Collections;
 using System.Linq;
 using UnityEngine;
 using Verse;
-using YinMu.Source.ArrestHere;
 
 namespace YinMu.Source
 {
@@ -63,6 +63,17 @@ namespace YinMu.Source
                 {
                     recipe.label += $" [{recipe.ProducedThingDef.apparel.GetLayersString()}]"
                         .Colorize(Color.cyan);
+                }
+            }
+            foreach (var type in GenDefDatabase.AllDefTypesWithDatabases())
+            {
+                foreach (var def in (IEnumerable)GenGeneric.GetStaticPropertyOnGenericType(typeof(DefDatabase<>), type, "AllDefs"))
+                {
+                    var finalDef = def as Def;
+                    if (finalDef.modContentPack != null)
+                    {
+                        finalDef.description += $"\n\n{finalDef.modContentPack.Name.Colorize(Color.gray)}";
+                    }
                 }
             }
         }
