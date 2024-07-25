@@ -55,6 +55,7 @@ namespace YinMu.Source
             }
             rot.ClearCachedData();
             rot.ResolveReferences();
+
             //配方
             foreach (var recipe in DefDatabase<RecipeDef>.AllDefs)
             {
@@ -69,12 +70,16 @@ namespace YinMu.Source
             {
                 foreach (var def in (IEnumerable)GenGeneric.GetStaticPropertyOnGenericType(typeof(DefDatabase<>), type, "AllDefs"))
                 {
-                    var finalDef = def as Def;
-                    if (finalDef.modContentPack != null)
-                    {
-                        finalDef.description += $"\n\n{finalDef.modContentPack.Name.Colorize(Color.gray)}";
-                    }
+                    AddModInfo((Def)def);
                 }
+            }
+        }
+
+        private void AddModInfo(Def def)
+        {
+            if (def.modContentPack != null)
+            {
+                def.description += $"\n<b>{def.modContentPack.Name.Colorize(Color.gray)}</b>";
             }
         }
 
