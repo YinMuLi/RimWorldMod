@@ -19,7 +19,7 @@ namespace BetterGameLife.Source
         public ModSettings Handles { get; private set; }
 
         public static ModEntry Instance { get; private set; }
-        public ModLogger ModLogger = new ModLogger("YINMU");
+        public ModLogger ModLogger = new ModLogger("BetterGameLife");
 
         private ModEntry()
         { Instance = this; }
@@ -88,7 +88,7 @@ namespace BetterGameLife.Source
 
         public override void Tick(int currentTick)
         {
-            //TODO: 增加检测间隔
+            //TODO: 增加检测间隔,异象（未测试）
             if (Handles.autoResearch && Find.ResearchManager.GetProject() == null)
             {
                 //当前研究项目为空，查找随机可以研究的项目
