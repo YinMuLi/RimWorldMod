@@ -43,9 +43,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Source\ArrestHere\Comp_Imprisonment.cs" />
-    <Compile Include="Source\ArrestHere\ImprisonPatch.cs" />
-    <Compile Include="Source\ArrestHere\JobDriver_ImprisonInPlace.cs" />
     <Compile Include="Source\Extensions.cs" />
     <Compile Include="Source\ModDefOf.cs" />
     <Compile Include="Source\ModEntry.cs" />

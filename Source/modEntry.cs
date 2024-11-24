@@ -1,4 +1,5 @@
 ﻿using HugsLib;
+using HugsLib.Utils;
 using RimWorld;
 using System.Collections;
 using System.Linq;
@@ -18,6 +19,7 @@ namespace YinMu.Source
         public ModSettings Handles { get; private set; }
 
         public static ModEntry Instance { get; private set; }
+        public ModLogger ModLogger = new ModLogger("YINMU");
 
         private ModEntry()
         { Instance = this; }
@@ -43,8 +45,8 @@ namespace YinMu.Source
             var rot = DefDatabase<ThingCategoryDef>.GetNamed("RottableThing");
             foreach (var thingDef in DefDatabase<ThingDef>.AllDefs)
             {
-                //所有堆叠数大于一的物品存储容量*10（SOS2不太够用）
-                if (thingDef.stackLimit > 1) thingDef.stackLimit *= 50;
+                //所有堆叠数大于一的物品存储容量*20（SOS2不太够用）
+                if (thingDef.stackLimit > 1) thingDef.stackLimit *= 20;
                 //不是尸体，有腐烂度
                 //TODO:动态创建新的分组，就用thingDef的分组名称
                 if (thingDef.HasComp<CompRottable>() && !thingDef.IsCorpse)
@@ -79,6 +81,7 @@ namespace YinMu.Source
         {
             if (def.modContentPack != null)
             {
+                //def.description += $"\n<b><color=#545454>{def.modContentPack.Name}</color></b>";
                 def.description += $"\n<b>{def.modContentPack.Name.Colorize(Color.gray)}</b>";
             }
         }
