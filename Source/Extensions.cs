@@ -1,7 +1,7 @@
 ﻿using RimWorld;
 using Verse;
 
-namespace YinMu.Source
+namespace BetterGameLife.Source
 {
     internal static class Extensions
     {

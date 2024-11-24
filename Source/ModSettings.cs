@@ -1,7 +1,7 @@
 ﻿using HugsLib.Settings;
 using Verse;
 
-namespace YinMu.Source
+namespace BetterGameLife.Source
 {
     /// <summary>
     /// 模组的设置暂时这么写

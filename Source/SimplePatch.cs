@@ -9,7 +9,7 @@ using UnityEngine;
 using Verse;
 using static Verse.DamageWorker;
 
-namespace YinMu.Source
+namespace BetterGameLife.Source
 {
     /// <summary>
     /// 类上一定要加[Harmony]

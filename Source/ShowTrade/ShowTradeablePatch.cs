@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Verse;
 
-namespace YinMu.Source.ShowTrade
+namespace BetterGameLife.Source.ShowTrade
 {
     [HarmonyPatch(typeof(Settlement), nameof(Settlement.GetGizmos))]
     internal class ShowTradeablePatch

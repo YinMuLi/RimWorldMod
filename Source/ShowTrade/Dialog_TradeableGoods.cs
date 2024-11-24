@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEngine;
 using Verse;
 
-namespace YinMu.Source.ShowTrade
+namespace BetterGameLife.Source.ShowTrade
 {
     internal class Dialog_TradeableGoods : Window
     {

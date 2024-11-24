@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Verse;
 
-namespace YinMu.Source
+namespace BetterGameLife.Source
 {
     [DefOf]
     public static class ModDefOf

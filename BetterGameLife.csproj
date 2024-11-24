@@ -7,8 +7,8 @@
     <ProjectGuid>{BF4A5C8E-6FFA-456D-B8E3-02BA8FB5C151}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>YinMu</RootNamespace>
-    <AssemblyName>YinMu</AssemblyName>
+    <RootNamespace>BetterGameLife</RootNamespace>
+    <AssemblyName>BetterGameLife</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>

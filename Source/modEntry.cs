@@ -6,12 +6,12 @@ using System.Linq;
 using UnityEngine;
 using Verse;
 
-namespace YinMu.Source
+namespace BetterGameLife.Source
 {
     [EarlyInit]
     internal class ModEntry : ModBase
     {
-        public override string ModIdentifier => "YinMu";
+        public override string ModIdentifier => "BetterGameLife";
 
         /// <summary>
         /// Handles:处理

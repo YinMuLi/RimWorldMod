@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEngine;
 using Verse;
 
-namespace YinMu.Source.WealthList
+namespace BetterGameLife.Source.WealthList
 {
     [Harmony]
     internal class HistoryTabPatch

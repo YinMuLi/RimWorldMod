@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34607.119
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YinMu", "YinMu.csproj", "{BF4A5C8E-6FFA-456D-B8E3-02BA8FB5C151}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BetterGameLife", "BetterGameLife.csproj", "{BF4A5C8E-6FFA-456D-B8E3-02BA8FB5C151}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

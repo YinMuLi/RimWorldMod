@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Verse;
 
-namespace YinMu.Source.WealthList
+namespace BetterGameLife.Source.WealthList
 {
     public class WealthThingGroup
     {
