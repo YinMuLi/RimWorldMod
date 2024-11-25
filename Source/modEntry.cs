@@ -88,12 +88,14 @@ namespace BetterGameLife.Source
 
         public override void Tick(int currentTick)
         {
-            //TODO: 增加检测间隔,异象（未测试）
+            //TODO: 增加检测间隔
             if (Handles.autoResearch && Find.ResearchManager.GetProject() == null)
             {
-                //当前研究项目为空，查找随机可以研究的项目
+                //查找可研究项目
                 var project = (DefDatabase<ResearchProjectDef>.AllDefs
                     .Where(p => p.CanStartNow)).RandomElement();
+                //检测研究台与研究设备，如果是基础研究台requiredResearchBuilding=null
+                //删繁就简
                 if (project != null) Find.ResearchManager.SetCurrentProject(project);
             }
         }

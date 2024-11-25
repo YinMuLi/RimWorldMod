@@ -49,14 +49,14 @@
     <Compile Include="Source\ModSettings.cs" />
     <Compile Include="Source\ShowTrade\ShowTradeablePatch.cs" />
     <Compile Include="Source\ShowTrade\TradeableGroup.cs" />
-    <Compile Include="Source\SimplePatch.cs" />
+    <Compile Include="Source\GamePatch.cs" />
     <Compile Include="Source\ShowTrade\Dialog_TradeableGoods.cs" />
     <Compile Include="Source\WealthList\HistoryTabPatch.cs" />
     <Compile Include="Source\WealthList\WealthThingGroup.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Krafs.Rimworld.Ref">
-      <Version>1.5.4104</Version>
+      <Version>1.5.4243</Version>
     </PackageReference>
     <PackageReference Include="Lib.Harmony">
       <Version>2.3.3</Version>

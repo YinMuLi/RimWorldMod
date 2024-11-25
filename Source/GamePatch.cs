@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Verse;
+using Verse.Noise;
 using static Verse.DamageWorker;
 
 namespace BetterGameLife.Source
@@ -15,7 +16,7 @@ namespace BetterGameLife.Source
     /// 类上一定要加[Harmony]
     /// </summary>
     [Harmony]
-    internal class SimplePatch
+    internal class GamePatch
     {
         /// <summary>
         /// 建筑返还材料
@@ -296,5 +297,19 @@ namespace BetterGameLife.Source
         //成瘾品的配置是写在XML中的
 
         #endregion 删减开局管理中的一些没用配置
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(GlowGrid), "GroundGlowAt")]
+        private static void GroundGlowAt(ref float __result, IntVec3 c, Map ___map)
+        {
+            if (___map.roofGrid.RoofAt(c) == RoofDefOf.RoofConstructed)
+            {
+                float num = ___map.skyManager.CurSkyGlow;
+                if (num > __result)
+                {
+                    __result = num;
+                }
+            }
+        }
     }
 }
