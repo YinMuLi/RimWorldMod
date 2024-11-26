@@ -1,4 +1,5 @@
-﻿using HugsLib;
+﻿using HarmonyLib;
+using HugsLib;
 using HugsLib.Utils;
 using RimWorld;
 using System.Collections;
@@ -24,6 +25,9 @@ namespace BetterGameLife.Source
         private ModEntry()
         {
             Instance = this;
+            var harmony = new Harmony("YinMu");
+            harmony.Patch(AccessTools.Method(typeof(QualityUtility), nameof(QualityUtility.GetLabel)), postfix: new HarmonyMethod(typeof(GamePatch), nameof(GamePatch.ColorQuality)));
+            harmony.Patch(AccessTools.Method(typeof(QualityUtility), nameof(QualityUtility.GetLabelShort)), postfix: new HarmonyMethod(typeof(GamePatch), nameof(GamePatch.ColorQuality)));
         }
 
         public override void EarlyInitialize()

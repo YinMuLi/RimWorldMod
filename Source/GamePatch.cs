@@ -319,9 +319,6 @@ namespace BetterGameLife.Source
         //    }
         //}
         //彩色品质，这种写法好像可以，等哪天失效了再改
-        [HarmonyPostfix]
-        [HarmonyPatch(typeof(QualityUtility), nameof(QualityUtility.GetLabelShort))]
-        [HarmonyPatch(typeof(QualityUtility), nameof(QualityUtility.GetLabel))]
         public static void ColorQuality(QualityCategory cat, ref string __result)
         {
             switch (cat)
