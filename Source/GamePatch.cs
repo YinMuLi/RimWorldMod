@@ -1,5 +1,4 @@
 ﻿using HarmonyLib;
-using HugsLib.Utils;
 using RimWorld;
 using RimWorld.Planet;
 using System;
@@ -7,7 +6,6 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Verse;
-using Verse.Noise;
 using static Verse.DamageWorker;
 
 namespace BetterGameLife.Source
@@ -18,6 +16,15 @@ namespace BetterGameLife.Source
     [Harmony]
     internal class GamePatch
     {
+        //static GamePatch()
+        //{
+        //    var harmony = new Harmony("YinMu.BetterGameLife");
+        //    harmony.Patch(AccessTools.Method(typeof(QuadrumUtility), nameof(QualityUtility.GetLabel)),
+        //        postfix: typeof(GamePatch).GetMethod(nameof(GamePatch.ColorQuality)));
+        //    harmony.Patch(AccessTools.Method(typeof(QuadrumUtility), nameof(QualityUtility.GetLabelShort)),
+        //        postfix: typeof(GamePatch).GetMethod(nameof(GamePatch.ColorQuality)));
+        //}
+
         /// <summary>
         /// 建筑返还材料
         /// </summary>
@@ -298,17 +305,34 @@ namespace BetterGameLife.Source
 
         #endregion 删减开局管理中的一些没用配置
 
+        //[HarmonyPostfix]
+        //[HarmonyPatch(typeof(GlowGrid), "GroundGlowAt")]
+        //private static void GroundGlowAt(ref float __result, IntVec3 c, Map ___map)
+        //{
+        //    if (___map.roofGrid.RoofAt(c) == RoofDefOf.RoofConstructed)
+        //    {
+        //        float num = ___map.skyManager.CurSkyGlow;
+        //        if (num > __result)
+        //        {
+        //            __result = num;
+        //        }
+        //    }
+        //}
+        //彩色品质，这种写法好像可以，等哪天失效了再改
         [HarmonyPostfix]
-        [HarmonyPatch(typeof(GlowGrid), "GroundGlowAt")]
-        private static void GroundGlowAt(ref float __result, IntVec3 c, Map ___map)
+        [HarmonyPatch(typeof(QualityUtility), nameof(QualityUtility.GetLabelShort))]
+        [HarmonyPatch(typeof(QualityUtility), nameof(QualityUtility.GetLabel))]
+        public static void ColorQuality(QualityCategory cat, ref string __result)
         {
-            if (___map.roofGrid.RoofAt(c) == RoofDefOf.RoofConstructed)
+            switch (cat)
             {
-                float num = ___map.skyManager.CurSkyGlow;
-                if (num > __result)
-                {
-                    __result = num;
-                }
+                case QualityCategory.Legendary: __result = __result.Colorize(new Color(255, 215, 0)); break;//金色
+                case QualityCategory.Masterwork: __result = __result.Colorize(Color.red); break;
+                case QualityCategory.Excellent: __result = __result.Colorize(new Color(128, 0, 128)); break;//紫色
+                case QualityCategory.Good: __result = __result.Colorize(Color.green); break;
+                //case QualityCategory.Normal: __result = __result.Colorize(Color.black); break;
+                case QualityCategory.Poor: __result = __result.Colorize(Color.gray); break;
+                case QualityCategory.Awful: __result = __result.Colorize(Color.gray); break;
             }
         }
     }

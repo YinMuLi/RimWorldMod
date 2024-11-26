@@ -22,7 +22,9 @@ namespace BetterGameLife.Source
         public ModLogger ModLogger = new ModLogger("BetterGameLife");
 
         private ModEntry()
-        { Instance = this; }
+        {
+            Instance = this;
+        }
 
         public override void EarlyInitialize()
         {
