@@ -7,7 +7,8 @@ using Verse;
 
 namespace BetterGameLife.Source.WealthList
 {
-    [Harmony]
+    //不显示财富
+    //[Harmony]
     internal class HistoryTabPatch
     {
         private static readonly List<Thing> tmpThings = [];

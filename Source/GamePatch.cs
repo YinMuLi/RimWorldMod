@@ -1,11 +1,17 @@
 ﻿using HarmonyLib;
+using HugsLib.Utils;
+using Mono.Unix.Native;
 using RimWorld;
 using RimWorld.Planet;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Emit;
+using System.Runtime.ConstrainedExecution;
 using UnityEngine;
 using Verse;
+using Verse.Sound;
+using static HarmonyLib.Code;
 using static Verse.DamageWorker;
 
 namespace BetterGameLife.Source
@@ -16,15 +22,6 @@ namespace BetterGameLife.Source
     [Harmony]
     internal class GamePatch
     {
-        //static GamePatch()
-        //{
-        //    var harmony = new Harmony("YinMu.BetterGameLife");
-        //    harmony.Patch(AccessTools.Method(typeof(QuadrumUtility), nameof(QualityUtility.GetLabel)),
-        //        postfix: typeof(GamePatch).GetMethod(nameof(GamePatch.ColorQuality)));
-        //    harmony.Patch(AccessTools.Method(typeof(QuadrumUtility), nameof(QualityUtility.GetLabelShort)),
-        //        postfix: typeof(GamePatch).GetMethod(nameof(GamePatch.ColorQuality)));
-        //}
-
         /// <summary>
         /// 建筑返还材料
         /// </summary>
@@ -246,11 +243,12 @@ namespace BetterGameLife.Source
         #endregion 简化游戏初始界面
 
         //在允许活动区标签上ALT键+左/右键点击，快捷更改活动区域
-        [HarmonyPostfix]
+        [HarmonyPrefix]
         [HarmonyPatch(typeof(PawnColumnWorker_AllowedArea), "HeaderClicked")]
-        private static void DoHeader(PawnTable table)
+        private static bool DoHeader(PawnTable table)
         {
-            if (Event.current.alt && Find.CurrentMap != null)
+            //base.HeaderClicked：排序鼠标左键，右键也是排序
+            if ((Event.current.button == 0 || Event.current.button == 1) && Find.CurrentMap != null)
             {
                 List<FloatMenuOption> list = new List<FloatMenuOption>();
                 //无限制
@@ -278,7 +276,9 @@ namespace BetterGameLife.Source
                     }));
                 }
                 Find.WindowStack.Add(new FloatMenu(list));
+                SoundDefOf.Checkbox_TurnedOn.PlayOneShotOnCamera();
             }
+            return false;
         }
 
         #region 删减开局管理中的一些没用配置
@@ -318,7 +318,7 @@ namespace BetterGameLife.Source
         //        }
         //    }
         //}
-        //彩色品质，这种写法好像可以，等哪天失效了再改
+        //彩色品质
         public static void ColorQuality(QualityCategory cat, ref string __result)
         {
             switch (cat)
@@ -331,6 +331,38 @@ namespace BetterGameLife.Source
                 case QualityCategory.Poor: __result = __result.Colorize(Color.gray); break;
                 case QualityCategory.Awful: __result = __result.Colorize(Color.gray); break;
             }
+        }
+
+        //立刻关闭电源，还有这种写法！！！
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(CompFlickable), "<CompGetGizmosExtra>b__20_1")]
+        private static bool CompGetGizmosExtra(ref bool ___wantSwitchOn, CompFlickable __instance)
+        {
+            if (ModEntry.Instance.Handles.TogglePowerInstantly)
+            {
+                ___wantSwitchOn = !___wantSwitchOn;
+                __instance.DoFlick();
+
+                return false;
+            }
+            return true;
+        }
+
+        //立刻开门，谁便写写竟然成功了
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(Building_Door), "<GetGizmos>b__69_1")]
+        private static bool Building_Door_GetGizmos(ref bool ___holdOpenInt, Building_Door __instance)
+        {
+            ___holdOpenInt = !___holdOpenInt;
+            if (___holdOpenInt)//保持敞开
+            {
+                AccessTools.Method(typeof(Building_Door), "DoorOpen")?.Invoke(__instance, new object[] { 110 });
+            }
+            else
+            {
+                AccessTools.Method(typeof(Building_Door), "DoorTryClose")?.Invoke(__instance, null);
+            }
+            return false;
         }
     }
 }

@@ -10,6 +10,8 @@ namespace BetterGameLife.Source
     {
         public SettingHandle<bool> autoChopStumps;//自动砍伐树桩
         public SettingHandle<bool> autoResearch;//自动研究
+        public SettingHandle<bool> TogglePowerInstantly;//立刻切换电源
+        public SettingHandle<bool> ToggleDoorOpenedInstantly;//立刻门
 
         /// <summary>
         /// spoils:战利品
@@ -33,6 +35,16 @@ namespace BetterGameLife.Source
              "AutoResearch".Translate(),
              "AutoResearchDesc".Translate(), true
              );
+            TogglePowerInstantly = pack.GetHandle(
+            "TogglePowerInstantly",
+            "TogglePowerInstantly".Translate(),
+            "TogglePowerInstantlyDesc".Translate(), true
+            );
+            ToggleDoorOpenedInstantly = pack.GetHandle(
+                "ToggleDoorOpenedInstantly",
+                 "ToggleDoorOpenedInstantly".Translate(),
+                 "ToggleDoorOpenedInstantlyDesc".Translate(),
+                 true);
         }
     }
 }
