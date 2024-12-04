@@ -48,7 +48,7 @@ namespace BetterGameLife.Source
         {
             if (!ModIsActive) return;
             Handles.Read(Settings);
-            var rot = DefDatabase<ThingCategoryDef>.GetNamed("RottableThing");
+            var rot = DefDatabase<ThingCategoryDef>.GetNamed("OrganicMatter");
             foreach (var thingDef in DefDatabase<ThingDef>.AllDefs)
             {
                 //所有堆叠数大于一的物品存储容量*20（SOS2不太够用）
@@ -65,15 +65,15 @@ namespace BetterGameLife.Source
             rot.ResolveReferences();
 
             //配方
-            foreach (var recipe in DefDatabase<RecipeDef>.AllDefs)
-            {
-                //在制作衣物列表显示衣物的覆盖层
-                if (recipe.ProducedThingDef?.IsApparel ?? false)
-                {
-                    recipe.label += $" [{recipe.ProducedThingDef.apparel.GetLayersString()}]"
-                        .Colorize(Color.cyan);
-                }
-            }
+            //foreach (var recipe in DefDatabase<RecipeDef>.AllDefs)
+            //{
+            //    //在制作衣物列表显示衣物的覆盖层
+            //    if (recipe.ProducedThingDef?.IsApparel ?? false)
+            //    {
+            //        recipe.label += $" [{recipe.ProducedThingDef.apparel.GetLayersString()}]"
+            //            .Colorize(Color.cyan);
+            //    }
+            //}
             foreach (var type in GenDefDatabase.AllDefTypesWithDatabases())
             {
                 foreach (var def in (IEnumerable)GenGeneric.GetStaticPropertyOnGenericType(typeof(DefDatabase<>), type, "AllDefs"))

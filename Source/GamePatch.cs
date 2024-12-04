@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Emit;
 using System.Runtime.ConstrainedExecution;
+using System.Threading;
 using UnityEngine;
 using Verse;
 using Verse.Sound;
@@ -353,16 +354,86 @@ namespace BetterGameLife.Source
         [HarmonyPatch(typeof(Building_Door), "<GetGizmos>b__69_1")]
         private static bool Building_Door_GetGizmos(ref bool ___holdOpenInt, Building_Door __instance)
         {
-            ___holdOpenInt = !___holdOpenInt;
-            if (___holdOpenInt)//保持敞开
+            if (ModEntry.Instance.Handles.ToggleDoorOpenedInstantly)
             {
-                AccessTools.Method(typeof(Building_Door), "DoorOpen")?.Invoke(__instance, new object[] { 110 });
+                ___holdOpenInt = !___holdOpenInt;
+                if (___holdOpenInt)//保持敞开
+                {
+                    AccessTools.Method(typeof(Building_Door), "DoorOpen")?.Invoke(__instance, new object[] { 110 });
+                }
+                else
+                {
+                    AccessTools.Method(typeof(Building_Door), "DoorTryClose")?.Invoke(__instance, null);
+                }
+                return false;
             }
-            else
-            {
-                AccessTools.Method(typeof(Building_Door), "DoorTryClose")?.Invoke(__instance, null);
-            }
-            return false;
+
+            return true;
         }
+
+        #region 智能控制遇到时间的速度
+
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(TimeControls), nameof(TimeControls.DoTimeControlsGUI))]
+        private static void DoTimeControlsGUI(Rect timerRect)
+        {
+            if (Mouse.IsOver(timerRect) && Find.TickManager.slower.ForcedNormalSpeed
+                && (Event.current.button == 1)
+                && Event.current.type == EventType.MouseDown)
+            //限速情况下，鼠标右键
+            {
+                var list = new List<FloatMenuOption>
+                {
+                    new FloatMenuOption("NormalSpeed".Translate(),()=>{ModSettings.curSpeed=SpeedOption.Normal;}),
+                    new FloatMenuOption("FastSpeed".Translate(),()=>{ModSettings.curSpeed=SpeedOption.Fast;}),
+                    new FloatMenuOption("SuperfastSpeed".Translate(),()=>{ModSettings.curSpeed=SpeedOption.Superfast;}),
+                    new FloatMenuOption("UltrafastSpeed".Translate(),()=>{ModSettings.curSpeed=SpeedOption.Ultrafast;}),
+                };
+                var window = new FloatMenu(list);
+                Find.WindowStack.Add(window);
+                Event.current.Use();
+            }
+        }
+
+        private static readonly Func<TickManager, bool> NothingHappeningInGame = AccessTools.MethodDelegate<Func<TickManager, bool>>("TickManager:NothingHappeningInGame");
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(TickManager), nameof(TickManager.TickRateMultiplier), MethodType.Getter)]
+        private static void TickRateMultiplier(ref float __result, bool ___UltraSpeedBoost, TickManager __instance)
+        {
+            if (Find.TickManager.slower.ForcedNormalSpeed)
+            {
+                if (__instance.CurTimeSpeed == TimeSpeed.Paused)
+                {
+                    __result = 0f;
+                }
+                switch (ModSettings.curSpeed)
+                {
+                    case SpeedOption.Fast: __result = 3f; break;
+                    case SpeedOption.Superfast:
+                        if (Find.Maps.Count == 0)
+                        {
+                            __result = 120f;
+                        }
+                        if (NothingHappeningInGame.Invoke(__instance))
+                        {
+                            __result = 12f;
+                        }
+                        __result = 6f;
+                        break;
+
+                    case SpeedOption.Ultrafast:
+                        if (Find.Maps.Count == 0 || ___UltraSpeedBoost)
+                        {
+                            __result = 150f;
+                        }
+                        __result = 15f;
+                        break;
+                }
+            }
+            else { ModSettings.curSpeed = SpeedOption.Normal; }
+        }
+
+        #endregion 智能控制遇到时间的速度
     }
 }
