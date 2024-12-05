@@ -289,22 +289,22 @@ namespace BetterGameLife.Source
         #region 删减开局管理中的一些没用配置
 
         //食物
-        [HarmonyPrefix]
-        [HarmonyPatch(typeof(FoodRestrictionDatabase), "GenerateStartingFoodRestrictions")]
-        private static bool GenerateStartingFoodRestrictions(FoodRestrictionDatabase __instance)
-        {
-            __instance.MakeNewFoodRestriction().label = "FoodRestrictionLavish".Translate();
-            return false;
-        }
+        //[HarmonyPrefix]
+        //[HarmonyPatch(typeof(FoodRestrictionDatabase), "GenerateStartingFoodRestrictions")]
+        //private static bool GenerateStartingFoodRestrictions(FoodRestrictionDatabase __instance)
+        //{
+        //    __instance.MakeNewFoodRestriction().label = "FoodRestrictionLavish".Translate();
+        //    return false;
+        //}
 
-        //穿着
-        [HarmonyPrefix]
-        [HarmonyPatch(typeof(OutfitDatabase), "GenerateStartingOutfits")]
-        private static bool GenerateStartingOutfits(OutfitDatabase __instance)
-        {
-            __instance.MakeNewOutfit().label = "OutfitAnything".Translate();
-            return false;
-        }
+        ////穿着
+        //[HarmonyPrefix]
+        //[HarmonyPatch(typeof(OutfitDatabase), "GenerateStartingOutfits")]
+        //private static bool GenerateStartingOutfits(OutfitDatabase __instance)
+        //{
+        //    __instance.MakeNewOutfit().label = "OutfitAnything".Translate();
+        //    return false;
+        //}
 
         //成瘾品的配置是写在XML中的
 
@@ -439,5 +439,47 @@ namespace BetterGameLife.Source
         }
 
         #endregion 智能控制遇到时间的速度
+
+        //[HarmonyPostfix]
+        //[HarmonyPatch(typeof(TransferableUIUtility), nameof(TransferableUIUtility.DoTransferableSorters))]
+        //private static void DoTransferableSorters()
+        //{
+        //    Widgets.BeginGroup(new Rect(360f + 180f, 0f, 80f, 27f));
+        //    if (Widgets.ButtonText(new Rect(0f, 0f, 50, 27f), "全部类别"))
+        //    {
+        //        List<FloatMenuOption> list = new List<FloatMenuOption>();
+        //        foreach (var item in DefDatabase<ThingCategoryDef>.AllDefsListForReading
+        //            .Where(t => t.parent == ThingCategoryDefOf.Root))
+        //        {
+        //            list.Add(new FloatMenuOption(item.LabelCap, () =>
+        //            {
+        //                foreach (var window in Find.WindowStack.Windows)
+        //                {
+        //                    if (window.GetType() == typeof(Dialog_LoadTransporters))
+        //                    {
+        //                        var traverse = Traverse.Create(window).Field<List<TransferableOneWay>>("transferables");
+        //                        //foreach (var tran in traverse.Value)
+        //                        //{
+        //                        //    tran.interactive = tran.ThingDef.IsWithinCategory(item);
+        //                        //}
+        //                        traverse.Value = (List<TransferableOneWay>)traverse.Value.Where(t => t.ThingDef.IsWithinCategory(item));
+        //                    }
+        //                }
+        //            }));
+        //        }
+        //        Find.WindowStack.Add(new FloatMenu(list));
+        //    }
+        //    Widgets.EndGroup();
+        //}
+
+        //private static void ChangeFloatMenu(List<Transferable> tradeables)
+        //{
+        //    List<FloatMenuOption> list = new List<FloatMenuOption>();
+        //    list.Add(new FloatMenuOption(ThingCategoryDefOf.Root.LabelCap, () =>
+        //    {
+        //        //tradeables.ForEach(trade => { trade.tr = true});
+        //        //tradeables.Where(trade => trade.ThingDef.IsWithinCategory(ThingCategoryDefOf.))
+        //    }));
+        //}
     }
 }
