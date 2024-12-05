@@ -4,10 +4,12 @@ using Mono.Unix.Native;
 using RimWorld;
 using RimWorld.Planet;
 using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Emit;
 using System.Runtime.ConstrainedExecution;
+using System.Security.Cryptography;
 using System.Threading;
 using UnityEngine;
 using Verse;
@@ -152,6 +154,8 @@ namespace BetterGameLife.Source
 
         private static bool ShouldDisplayDamageInfo(Thing target, Thing instigator)
         {
+            if (target == null || instigator == null) return false;
+
             //instigator:煽动者
             //TODO:伤害的显示条件
             if (target is Pawn && instigator is Pawn)

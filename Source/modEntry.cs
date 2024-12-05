@@ -22,12 +22,15 @@ namespace BetterGameLife.Source
         public static ModEntry Instance { get; private set; }
         public ModLogger ModLogger = new ModLogger("BetterGameLife");
 
+        protected override bool HarmonyAutoPatch => false;
+
         private ModEntry()
         {
             Instance = this;
-            var harmony = new Harmony("YinMu");
-            harmony.Patch(AccessTools.Method(typeof(QualityUtility), nameof(QualityUtility.GetLabel)), postfix: new HarmonyMethod(typeof(GamePatch), nameof(GamePatch.ColorQuality)));
-            harmony.Patch(AccessTools.Method(typeof(QualityUtility), nameof(QualityUtility.GetLabelShort)), postfix: new HarmonyMethod(typeof(GamePatch), nameof(GamePatch.ColorQuality)));
+            HarmonyInst = new Harmony("YinMu.BetterGameLife");
+            HarmonyInst.Patch(AccessTools.Method(typeof(QualityUtility), nameof(QualityUtility.GetLabel)), postfix: new HarmonyMethod(typeof(GamePatch), nameof(GamePatch.ColorQuality)));
+            HarmonyInst.Patch(AccessTools.Method(typeof(QualityUtility), nameof(QualityUtility.GetLabelShort)), postfix: new HarmonyMethod(typeof(GamePatch), nameof(GamePatch.ColorQuality)));
+            HarmonyInst.PatchAll();
         }
 
         public override void EarlyInitialize()
