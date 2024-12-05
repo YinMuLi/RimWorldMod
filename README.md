@@ -8,9 +8,9 @@
 - 小人禁止生成亲戚
 - ~~显示每个物品的财富值（WealthList）（注释了）~~
 - 显示派系出售的物品
-- 商队贸易界面蓝图显示应用情况（Show Known Techprints-显示已知科研蓝图）
+- ~~商队贸易界面蓝图显示应用情况（Show Known Techprints-显示已知科研蓝图）~~
 - 自动砍伐树桩（AutoCutStumps）
-- 建立因为温度腐化的分类（Bad Meat Category）
+- ~~建立因为温度腐化的分类（Bad Meat Category）~~
 - 显示伤害（DamageIndicators）
 - 将任意石块切割成任意石砖，原版的内容的石砖（制作界面上的描述没有改，其实是不知道怎么改！）
 - 机械师控制机械无视范围（Unlimited Mechanitor Command Range）

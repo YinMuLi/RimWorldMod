@@ -102,24 +102,24 @@ namespace BetterGameLife.Source
         /// <param name="trad"></param>
         /// <param name="rect"></param>
         /// <param name="curX"></param>
-        [HarmonyPostfix]
-        [HarmonyPatch(typeof(TransferableUIUtility), nameof(TransferableUIUtility.DoExtraIcons))]
-        private static void DoExtraIcons(Transferable trad, Rect rect, ref float curX)
-        {
-            var techThing = trad.AnyThing.TryGetComp<CompTechprint>();
-            if (techThing != null)
-            {
-                Rect rect1 = new Rect(curX - with, (rect.height - with) / 2, with, with);
-                var res = techThing.Props.project.TechprintCount - techThing.Props.project.TechprintsApplied;
-                Text.Anchor = TextAnchor.MiddleCenter;
-                Widgets.Label(rect1, res.ToString().Colorize(Color.cyan));
-                if (Mouse.IsOver(rect1))
-                {
-                    Widgets.DrawHighlight(rect1);
-                }
-                curX -= with;
-            }
-        }
+        //[HarmonyPostfix]
+        //[HarmonyPatch(typeof(TransferableUIUtility), nameof(TransferableUIUtility.DoExtraIcons))]
+        //private static void DoExtraIcons(Transferable trad, Rect rect, ref float curX)
+        //{
+        //    var techThing = trad.AnyThing.TryGetComp<CompTechprint>();
+        //    if (techThing != null)
+        //    {
+        //        Rect rect1 = new Rect(curX - with, (rect.height - with) / 2, with, with);
+        //        var res = techThing.Props.project.TechprintCount - techThing.Props.project.TechprintsApplied;
+        //        Text.Anchor = TextAnchor.MiddleCenter;
+        //        Widgets.Label(rect1, res.ToString().Colorize(Color.cyan));
+        //        if (Mouse.IsOver(rect1))
+        //        {
+        //            Widgets.DrawHighlight(rect1);
+        //        }
+        //        curX -= with;
+        //    }
+        //}
 
         /// <summary>
         /// 自动砍伐树桩
@@ -480,6 +480,16 @@ namespace BetterGameLife.Source
         //        //tradeables.ForEach(trade => { trade.tr = true});
         //        //tradeables.Where(trade => trade.ThingDef.IsWithinCategory(ThingCategoryDefOf.))
         //    }));
+        //}
+        //[HarmonyPrefix]
+        //[HarmonyPatch(typeof(TransferableOneWayWidget), nameof(TransferableOneWayWidget.AddSection))]
+        //private static void AddSection(ref IEnumerable<TransferableOneWay> transferables)
+        //{
+        //    transferables = transferables.Where(t => t.ThingDef.IsWithinCategory(ThingCategoryDefOf.Foods));
+        //    foreach (var item in transferables)
+        //    {
+        //        ModEntry.Instance.ModLogger.Error(item.LabelCap);
+        //    }
         //}
     }
 }

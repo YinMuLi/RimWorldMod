@@ -51,21 +51,21 @@ namespace BetterGameLife.Source
         {
             if (!ModIsActive) return;
             Handles.Read(Settings);
-            var rot = DefDatabase<ThingCategoryDef>.GetNamed("OrganicMatter");
+            //var rot = DefDatabase<ThingCategoryDef>.GetNamed("OrganicMatter");
             foreach (var thingDef in DefDatabase<ThingDef>.AllDefs)
             {
                 //所有堆叠数大于一的物品存储容量*20（SOS2不太够用）
                 if (thingDef.stackLimit > 1) thingDef.stackLimit *= 20;
                 //不是尸体，有腐烂度
                 //TODO:动态创建新的分组，就用thingDef的分组名称
-                if (thingDef.HasComp<CompRottable>() && !thingDef.IsCorpse)
-                {
-                    thingDef.thingCategories.Add(rot);
-                    rot.childThingDefs.Add(thingDef);
-                }
+                //if (thingDef.HasComp<CompRottable>() && !thingDef.IsCorpse)
+                //{
+                //    thingDef.thingCategories.Add(rot);
+                //    rot.childThingDefs.Add(thingDef);
+                //}
             }
-            rot.ClearCachedData();
-            rot.ResolveReferences();
+            //rot.ClearCachedData();
+            //rot.ResolveReferences();
 
             //配方
             //foreach (var recipe in DefDatabase<RecipeDef>.AllDefs)
