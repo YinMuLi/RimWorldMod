@@ -1,20 +1,13 @@
-﻿using HarmonyLib;
-using HugsLib.Utils;
-using Mono.Unix.Native;
+﻿using BetterGameLife.Source.Utils;
+using HarmonyLib;
 using RimWorld;
 using RimWorld.Planet;
 using System;
-using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.Emit;
-using System.Runtime.ConstrainedExecution;
-using System.Security.Cryptography;
-using System.Threading;
 using UnityEngine;
 using Verse;
 using Verse.Sound;
-using static HarmonyLib.Code;
 using static Verse.DamageWorker;
 
 namespace BetterGameLife.Source
@@ -79,6 +72,20 @@ namespace BetterGameLife.Source
             }
         }
 
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(Pawn_ApparelTracker), nameof(Pawn_ApparelTracker.TryDrop))]
+        [HarmonyPatch(new Type[] { typeof(Apparel), typeof(Apparel), typeof(IntVec3), typeof(bool) },
+            new ArgumentType[] { ArgumentType.Normal, ArgumentType.Out, ArgumentType.Normal, ArgumentType.Normal })]
+        private static bool TryDrop(Pawn_ApparelTracker __instance, Apparel ap, ref bool __result)
+        {
+            if (ModEntry.Instance.Handles.OnlyDropSmeltableApperal && __instance.pawn.Dead && !ap.Smeltable)
+            {
+                __result = false;
+                return false;
+            }
+            return true;
+        }
+
         #endregion 尸体腐烂小人穿的衣服才会有“已亡”
 
         /// <summary>
@@ -102,24 +109,24 @@ namespace BetterGameLife.Source
         /// <param name="trad"></param>
         /// <param name="rect"></param>
         /// <param name="curX"></param>
-        //[HarmonyPostfix]
-        //[HarmonyPatch(typeof(TransferableUIUtility), nameof(TransferableUIUtility.DoExtraIcons))]
-        //private static void DoExtraIcons(Transferable trad, Rect rect, ref float curX)
-        //{
-        //    var techThing = trad.AnyThing.TryGetComp<CompTechprint>();
-        //    if (techThing != null)
-        //    {
-        //        Rect rect1 = new Rect(curX - with, (rect.height - with) / 2, with, with);
-        //        var res = techThing.Props.project.TechprintCount - techThing.Props.project.TechprintsApplied;
-        //        Text.Anchor = TextAnchor.MiddleCenter;
-        //        Widgets.Label(rect1, res.ToString().Colorize(Color.cyan));
-        //        if (Mouse.IsOver(rect1))
-        //        {
-        //            Widgets.DrawHighlight(rect1);
-        //        }
-        //        curX -= with;
-        //    }
-        //}
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(TransferableUIUtility), nameof(TransferableUIUtility.DoExtraIcons))]
+        private static void DoExtraIcons(Transferable trad, Rect rect, ref float curX)
+        {
+            var techThing = trad.AnyThing.TryGetComp<CompTechprint>();
+            if (techThing != null)
+            {
+                Rect rect1 = new Rect(curX - with, (rect.height - with) / 2, with, with);
+                var res = techThing.Props.project.TechprintCount - techThing.Props.project.TechprintsApplied;
+                Text.Anchor = TextAnchor.MiddleCenter;
+                Widgets.Label(rect1, res.ToString().Colorize(Color.cyan));
+                //if (Mouse.IsOver(rect1))
+                //{
+                //    Widgets.DrawHighlight(rect1);
+                //}
+                curX -= with;
+            }
+        }
 
         /// <summary>
         /// 自动砍伐树桩
@@ -144,6 +151,10 @@ namespace BetterGameLife.Source
         [HarmonyPatch(typeof(Thing), nameof(Thing.TakeDamage))]
         private static void TakeDamage(Thing __instance, DamageInfo dinfo, DamageResult __result)
         {
+            if (__instance == null || __result == null || dinfo.Instigator == null)
+            {
+                return;
+            }
             float damage = __result.totalDamageDealt;
             if (damage > 0.01f && __instance.Map != null &&
                 ShouldDisplayDamageInfo(__instance, dinfo.Instigator))
@@ -154,8 +165,6 @@ namespace BetterGameLife.Source
 
         private static bool ShouldDisplayDamageInfo(Thing target, Thing instigator)
         {
-            if (target == null || instigator == null) return false;
-
             //instigator:煽动者
             //TODO:伤害的显示条件
             if (target is Pawn && instigator is Pawn)

@@ -10,4 +10,6 @@
 	<TogglePowerInstantlyDesc>无需小人操控，立刻关闭电源</TogglePowerInstantlyDesc>
 	<ToggleDoorOpenedInstantly>立刻开关门</ToggleDoorOpenedInstantly>
 	<ToggleDoorOpenedInstantlyDesc>无需小人，立刻开关门</ToggleDoorOpenedInstantlyDesc>
+	<OnlyDropSmeltableApperal>仅可熔炼衣物</OnlyDropSmeltableApperal>
+	<OnlyDropSmeltableApperalDesc>小人屠宰或剥光死人衣物时只会掉落可熔炼</OnlyDropSmeltableApperalDesc>
 </LanguageData>

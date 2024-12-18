@@ -43,10 +43,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Source\Enums.cs" />
-    <Compile Include="Source\Extensions.cs" />
-    <Compile Include="Source\globalUsings.cs" />
-    <Compile Include="Source\ModDefOf.cs" />
+    <Compile Include="Source\Utils\Enums.cs" />
+    <Compile Include="Source\Utils\Extensions.cs" />
+    <Compile Include="Source\Utils\globalUsings.cs" />
+    <Compile Include="Source\Utils\ModDefOf.cs" />
     <Compile Include="Source\ModEntry.cs" />
     <Compile Include="Source\ModSettings.cs" />
     <Compile Include="Source\ShowTrade\ShowTradeablePatch.cs" />
@@ -77,8 +77,10 @@
     <Content Include="Languages\ChineseSimplified\DefInjected\ThingCategoryDef\ThingCategories.xml" />
     <Content Include="Languages\ChineseSimplified\Keyed\Settings.xml" />
     <Content Include="Languages\ChineseSimplified\Keyed\Misc.xml" />
+    <Content Include="Patches\UniversalStone.xml" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Source\Misc\" />
     <Folder Include="Source\Patches\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

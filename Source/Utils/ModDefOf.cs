@@ -1,6 +1,6 @@
 ﻿using RimWorld;
 
-namespace BetterGameLife.Source
+namespace BetterGameLife.Source.Utils
 {
     [DefOf]
     public static class ModDefOf

@@ -4,7 +4,6 @@ using HugsLib.Utils;
 using RimWorld;
 using System.Collections;
 using System.Linq;
-using UnityEngine;
 using Verse;
 
 namespace BetterGameLife.Source
@@ -12,17 +11,7 @@ namespace BetterGameLife.Source
     [EarlyInit]
     internal class ModEntry : ModBase
     {
-        public override string ModIdentifier => "BetterGameLife";
-
-        /// <summary>
-        /// Handles:处理
-        /// </summary>
-        public ModSettings Handles { get; private set; }
-
-        public static ModEntry Instance { get; private set; }
         public ModLogger ModLogger = new ModLogger("BetterGameLife");
-
-        protected override bool HarmonyAutoPatch => false;
 
         private ModEntry()
         {
@@ -33,19 +22,15 @@ namespace BetterGameLife.Source
             HarmonyInst.PatchAll();
         }
 
-        public override void EarlyInitialize()
-        {
-            Handles = new ModSettings();
-        }
+        public static ModEntry Instance { get; private set; }
 
-        public override void StaticInitialize()
-        {
-            //foreach (var pawn in DefDatabase<ThingDef>
-            //    .AllDefs.Where(t => t.race?.Humanlike ?? false))
-            //{
-            //    pawn.comps.Add(new CompProperties_Imprisonment());
-            //}
-        }
+        /// <summary>
+        /// Handles:处理
+        /// </summary>
+        public ModSettings Handles { get; private set; }
+
+        public override string ModIdentifier => "BetterGameLife";
+        protected override bool HarmonyAutoPatch => false;
 
         public override void DefsLoaded()
         {
@@ -86,13 +71,18 @@ namespace BetterGameLife.Source
             }
         }
 
-        private void AddModInfo(Def def)
+        public override void EarlyInitialize()
         {
-            if (def.modContentPack != null)
-            {
-                //def.description += $"\n<b><color=#545454>{def.modContentPack.Name}</color></b>";
-                def.description += $"\n<b>{def.modContentPack.Name.Colorize(Color.gray)}</b>";
-            }
+            Handles = new ModSettings();
+        }
+
+        public override void StaticInitialize()
+        {
+            //foreach (var pawn in DefDatabase<ThingDef>
+            //    .AllDefs.Where(t => t.race?.Humanlike ?? false))
+            //{
+            //    pawn.comps.Add(new CompProperties_Imprisonment());
+            //}
         }
 
         public override void Tick(int currentTick)
@@ -106,6 +96,15 @@ namespace BetterGameLife.Source
                 //检测研究台与研究设备，如果是基础研究台requiredResearchBuilding=null
                 //删繁就简
                 if (project != null) Find.ResearchManager.SetCurrentProject(project);
+            }
+        }
+
+        private void AddModInfo(Def def)
+        {
+            if (def.modContentPack != null)
+            {
+                def.description += $"\n<b><color=#45B39D><{def.modContentPack.Name}></color></b>";
+                //def.description += $"\n<b><{def.modContentPack.Name.Colorize(Color.gray)}></b>";
             }
         }
     }

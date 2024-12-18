@@ -1,7 +1,7 @@
 ﻿using RimWorld;
 using Verse;
 
-namespace BetterGameLife.Source
+namespace BetterGameLife.Source.Utils
 {
     internal static class Extensions
     {
