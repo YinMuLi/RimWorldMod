@@ -12,10 +12,12 @@ namespace BetterGameLife.Source
     internal class ModEntry : ModBase
     {
         public ModLogger ModLogger = new ModLogger("BetterGameLife");
+        //public ItemCategory itemCategory;
 
-        private ModEntry()
+        public ModEntry()
         {
             Instance = this;
+            //itemCategory = new ItemCategory();
             HarmonyInst = new Harmony("YinMu.BetterGameLife");
             HarmonyInst.Patch(AccessTools.Method(typeof(QualityUtility), nameof(QualityUtility.GetLabel)), postfix: new HarmonyMethod(typeof(GamePatch), nameof(GamePatch.ColorQuality)));
             HarmonyInst.Patch(AccessTools.Method(typeof(QualityUtility), nameof(QualityUtility.GetLabelShort)), postfix: new HarmonyMethod(typeof(GamePatch), nameof(GamePatch.ColorQuality)));
@@ -78,11 +80,6 @@ namespace BetterGameLife.Source
 
         public override void StaticInitialize()
         {
-            //foreach (var pawn in DefDatabase<ThingDef>
-            //    .AllDefs.Where(t => t.race?.Humanlike ?? false))
-            //{
-            //    pawn.comps.Add(new CompProperties_Imprisonment());
-            //}
         }
 
         public override void Tick(int currentTick)

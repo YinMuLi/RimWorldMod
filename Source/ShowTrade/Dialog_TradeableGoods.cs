@@ -27,9 +27,12 @@ namespace BetterGameLife.Source.ShowTrade
             forcePause = true;
             absorbInputAroundWindow = true;
             this.trader = trader;
-            this.negotiator = negotiator;
             settlement = (Settlement)trader;
-            negotiatorStat = StatExtension.GetStatValue(negotiator, StatDefOf.TradePriceImprovement);
+            this.negotiator = negotiator;
+            if (negotiator != null)
+            {
+                negotiatorStat = StatExtension.GetStatValue(negotiator, StatDefOf.TradePriceImprovement);
+            }
             TradeSession.trader = trader;
             TradeSession.giftMode = false;
             TradeSession.playerNegotiator = negotiator;
@@ -48,9 +51,12 @@ namespace BetterGameLife.Source.ShowTrade
             Text.Font = GameFont.Small;
             Text.Anchor = TextAnchor.MiddleLeft;
             Rect rect = new Rect(0f, num + 10f, inRect.width, 40f);
-            Widgets.ThingIcon(rect.LeftPartPixels(40), negotiator);
-            Widgets.Label(rect.RightPartPixels(inRect.width - 40f), "BestPawn".Translate(negotiator.NameFullColored, negotiatorStat.ToStringPercent()));
-            num += 50f;
+            if (negotiator != null)
+            {
+                Widgets.ThingIcon(rect.LeftPartPixels(40), negotiator);
+                Widgets.Label(rect.RightPartPixels(inRect.width - 40f), "BestPawn".Translate(negotiator.NameFullColored, negotiatorStat.ToStringPercent()));
+                num += 50f;
+            }
             //显示交易对所持有的金钱,-16:下方滑轮占16
             DrawTradeableRow(new Rect(0f, num, inRect.width - 16f, 30f), currencyTradeable, 0);
             num += 30f;

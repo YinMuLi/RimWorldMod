@@ -449,56 +449,52 @@ namespace BetterGameLife.Source
 
         #endregion 智能控制遇到时间的速度
 
+        //private static readonly Action<TransferableOneWayWidget> CacheTransferables = AccessTools.MethodDelegate<Action<TransferableOneWayWidget>>("TransferableOneWayWidget:CacheTransferables");
+        //private static Type InnerSection = AccessToolsExtensions.InnerTypes(typeof(TransferableOneWayWidget)).FirstOrDefault();
+
         //[HarmonyPostfix]
-        //[HarmonyPatch(typeof(TransferableUIUtility), nameof(TransferableUIUtility.DoTransferableSorters))]
-        //private static void DoTransferableSorters()
+        //[HarmonyPatch(typeof(TransferableOneWayWidget), nameof(TransferableOneWayWidget.OnGUI))]
+        //[HarmonyPatch([typeof(Rect), typeof(bool)], [ArgumentType.Normal, ArgumentType.Out])]
+        //private static void OnGUI(TransferableOneWayWidget __instance)
         //{
-        //    Widgets.BeginGroup(new Rect(360f + 180f, 0f, 80f, 27f));
-        //    if (Widgets.ButtonText(new Rect(0f, 0f, 50, 27f), "全部类别"))
+        //    GUI.BeginGroup(new Rect(540f, 0f, 525f, 27f));
+        //    //Text.Font = GameFont.Tiny;
+        //    //Text.Anchor = TextAnchor.LowerCenter;
+        //    if (Widgets.ButtonText(new Rect(0f, 0f, 80f, 27f), ModEntry.Instance.itemCategory.Label))
         //    {
         //        List<FloatMenuOption> list = new List<FloatMenuOption>();
+        //        list.Add(new FloatMenuOption("AllCategory".Translate(), () =>
+        //        {
+        //            ModEntry.Instance.itemCategory = new ItemCategory();
+        //            CacheTransferables.Invoke(__instance);
+        //        }));
         //        foreach (var item in DefDatabase<ThingCategoryDef>.AllDefsListForReading
         //            .Where(t => t.parent == ThingCategoryDefOf.Root))
         //        {
         //            list.Add(new FloatMenuOption(item.LabelCap, () =>
         //            {
-        //                foreach (var window in Find.WindowStack.Windows)
-        //                {
-        //                    if (window.GetType() == typeof(Dialog_LoadTransporters))
-        //                    {
-        //                        var traverse = Traverse.Create(window).Field<List<TransferableOneWay>>("transferables");
-        //                        //foreach (var tran in traverse.Value)
-        //                        //{
-        //                        //    tran.interactive = tran.ThingDef.IsWithinCategory(item);
-        //                        //}
-        //                        traverse.Value = (List<TransferableOneWay>)traverse.Value.Where(t => t.ThingDef.IsWithinCategory(item));
-        //                    }
-        //                }
+        //                ModEntry.Instance.itemCategory = new ItemCategory(item);
+        //                CacheTransferables.Invoke(__instance);
         //            }));
         //        }
+
         //        Find.WindowStack.Add(new FloatMenu(list));
         //    }
         //    Widgets.EndGroup();
         //}
 
-        //private static void ChangeFloatMenu(List<Transferable> tradeables)
+        //[HarmonyPostfix]
+        //[HarmonyPatch(typeof(TransferableOneWayWidget), "CacheTransferables")]
+        //private static void CacheTransferables_Post()
         //{
-        //    List<FloatMenuOption> list = new List<FloatMenuOption>();
-        //    list.Add(new FloatMenuOption(ThingCategoryDefOf.Root.LabelCap, () =>
-        //    {
-        //        //tradeables.ForEach(trade => { trade.tr = true});
-        //        //tradeables.Where(trade => trade.ThingDef.IsWithinCategory(ThingCategoryDefOf.))
-        //    }));
+        //    //section是个内部结构类，不会获取
         //}
-        //[HarmonyPrefix]
-        //[HarmonyPatch(typeof(TransferableOneWayWidget), nameof(TransferableOneWayWidget.AddSection))]
-        //private static void AddSection(ref IEnumerable<TransferableOneWay> transferables)
-        //{
-        //    transferables = transferables.Where(t => t.ThingDef.IsWithinCategory(ThingCategoryDefOf.Foods));
-        //    foreach (var item in transferables)
-        //    {
-        //        ModEntry.Instance.ModLogger.Error(item.LabelCap);
-        //    }
-        //}
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(Trait), nameof(Trait.TipString))]
+        private static void TraitTipString(ref string __result, Trait __instance)
+        {
+            __result += $"\n<b><color=#45B39D><{__instance.def.modContentPack.Name}></color></b>";
+        }
     }
 }
