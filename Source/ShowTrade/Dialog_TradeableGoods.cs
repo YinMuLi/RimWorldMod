@@ -2,6 +2,7 @@
 using RimWorld.Planet;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using UnityEngine;
 using Verse;
 
@@ -14,8 +15,10 @@ namespace BetterGameLife.Source.ShowTrade
         private Vector2 scrollPosition = Vector2.zero;
         private ITrader trader;
         private Settlement settlement;
-        private List<TradeableGroup> displayGroup = [];
-        private Tradeable currencyTradeable;//商队持有的金钱
+
+        //private List<TradeableGroup> displayGroup = [];
+        private Tradeable holdCurrency;//商队持有的金钱
+
         private Pawn negotiator;
         private readonly float negotiatorStat;
 
@@ -36,7 +39,7 @@ namespace BetterGameLife.Source.ShowTrade
             TradeSession.trader = trader;
             TradeSession.giftMode = false;
             TradeSession.playerNegotiator = negotiator;
-            Group();
+            RefreshCache();
         }
 
         public override void DoWindowContents(Rect inRect)
@@ -58,7 +61,7 @@ namespace BetterGameLife.Source.ShowTrade
                 num += 50f;
             }
             //显示交易对所持有的金钱,-16:下方滑轮占16
-            DrawTradeableRow(new Rect(0f, num, inRect.width - 16f, 30f), currencyTradeable, 0);
+            DrawTradeableRow(new Rect(0f, num, inRect.width - 16f, 30f), holdCurrency, 1);
             num += 30f;
             //主要内容
             Widgets.DrawLineHorizontal(0, num, inRect.width);
@@ -74,28 +77,35 @@ namespace BetterGameLife.Source.ShowTrade
 
         private void FillMainRect(Rect rect)
         {
+            if (cachedTradeables.Count < 0) return;
+
             Text.Font = GameFont.Small;
             Text.Anchor = TextAnchor.MiddleLeft;
-            Rect viewRect = new Rect(0f, 0f, rect.width - 16f, displayGroup.Sum(g =>
-             g.expanded ? g.list.Count + 1 : 1) * 30f);
+            //Rect viewRect = new Rect(0f, 0f, rect.width - 16f, displayGroup.Sum(g =>
+            // g.expanded ? g.list.Count + 1 : 1) * 30f);
+            Rect viewRect = new Rect(0f, 0f, rect.width - 16f, cachedTradeables.Count * 30f);
             Widgets.BeginScrollView(rect, ref scrollPosition, viewRect);
-            float num = 0;
-            foreach (var group in displayGroup)
+            //去除分组功能，直接显示
+            //foreach (var group in displayGroup)
+            //{
+            //    int index = 1;
+            //    var groupRect = new Rect(0f, num, viewRect.width, 30f);
+            //    Widgets.Label(groupRect.LeftHalf().RightPart(0.9f), group.name);
+            //    if (Widgets.ButtonImage(groupRect.LeftPartPixels(30f), group.expanded ? TexButton.Collapse : TexButton.Reveal)) group.expanded = !group.expanded;
+            //    num += 30f;
+            //    if (group.expanded)
+            //    {
+            //        foreach (var item in group.list)
+            //        {
+            //            DrawTradeableRow(new Rect(0f, num, viewRect.width, 30f), item, index);
+            //            num += 30f;
+            //            index++;
+            //        }
+            //    }
+            //}
+            for (int i = 0; i < cachedTradeables.Count; i++)
             {
-                int index = 1;
-                var groupRect = new Rect(0f, num, viewRect.width, 30f);
-                Widgets.Label(groupRect.LeftHalf().RightPart(0.9f), group.name);
-                if (Widgets.ButtonImage(groupRect.LeftPartPixels(30f), group.expanded ? TexButton.Collapse : TexButton.Reveal)) group.expanded = !group.expanded;
-                num += 30f;
-                if (group.expanded)
-                {
-                    foreach (var item in group.list)
-                    {
-                        DrawTradeableRow(new Rect(0f, num, viewRect.width, 30f), item, index);
-                        num += 30f;
-                        index++;
-                    }
-                }
+                DrawTradeableRow(new Rect(0f, i * 30, viewRect.width, 30f), cachedTradeables[i], i);
             }
             Widgets.EndScrollView();
         }
@@ -153,7 +163,7 @@ namespace BetterGameLife.Source.ShowTrade
             Widgets.Label(rect2, trad.GetPriceFor(TradeAction.PlayerBuys).ToStringMoney());
         }
 
-        private void Group()
+        private void RefreshCache()
         {
             cachedTradeables.Clear();
             //获取交易物品
@@ -168,23 +178,23 @@ namespace BetterGameLife.Source.ShowTrade
                 tradeable.AddThing(good, Transactor.Trader);
             }
             //Currency:货币
-            currencyTradeable = GenCollection.FirstOrDefault<Tradeable>(cachedTradeables, x => x.IsCurrency && !x.IsFavor);
+            holdCurrency = GenCollection.FirstOrDefault<Tradeable>(cachedTradeables, x => x.IsCurrency && !x.IsFavor);
             cachedTradeables = cachedTradeables.Where(tr => !tr.IsCurrency && (trader.TraderKind.WillTrade(tr.ThingDef) || !TradeSession.trader.TraderKind.hideThingsNotWillingToTrade)).ToList();
             //对物品进行分组
-            displayGroup.Add(new TradeableGroup
-            {
-                name = "PawnsTabShort".Translate(),//生物
-                list = cachedTradeables.Where(tr => tr is Tradeable_Pawn).ToList(),
-            });
-            displayGroup.Add(new TradeableGroup(ThingCategoryDefOf.Foods, cachedTradeables));//食物
-            displayGroup.Add(new TradeableGroup(ThingCategoryDefOf.ResourcesRaw, cachedTradeables));//原材料
-            displayGroup.Add(new TradeableGroup(ThingCategoryDefOf.Weapons, cachedTradeables));//武器
-            displayGroup.Add(new TradeableGroup(ThingCategoryDefOf.Items, cachedTradeables));//物品
-            displayGroup.Add(new TradeableGroup(ThingCategoryDefOf.Manufactured, cachedTradeables));//制成品
-            displayGroup.Add(new TradeableGroup(ThingCategoryDefOf.Apparel, cachedTradeables));//衣物
-            displayGroup.Add(new TradeableGroup(ThingCategoryDefOf.Buildings, cachedTradeables));//建筑
+            //displayGroup.Add(new TradeableGroup
+            //{
+            //    name = "PawnsTabShort".Translate(),//生物
+            //    list = cachedTradeables.Where(tr => tr is Tradeable_Pawn).ToList(),
+            //});
+            //displayGroup.Add(new TradeableGroup(ThingCategoryDefOf.Foods, cachedTradeables));//食物
+            //displayGroup.Add(new TradeableGroup(ThingCategoryDefOf.ResourcesRaw, cachedTradeables));//原材料
+            //displayGroup.Add(new TradeableGroup(ThingCategoryDefOf.Weapons, cachedTradeables));//武器
+            //displayGroup.Add(new TradeableGroup(ThingCategoryDefOf.Items, cachedTradeables));//物品
+            //displayGroup.Add(new TradeableGroup(ThingCategoryDefOf.Manufactured, cachedTradeables));//制成品
+            //displayGroup.Add(new TradeableGroup(ThingCategoryDefOf.Apparel, cachedTradeables));//衣物
+            //displayGroup.Add(new TradeableGroup(ThingCategoryDefOf.Buildings, cachedTradeables));//建筑
 
-            displayGroup.RemoveWhere(g => g.list.Count < 1);
+            //displayGroup.RemoveWhere(g => g.list.Count < 1);
             //TODO:排序
         }
     }

@@ -11,7 +11,7 @@ namespace BetterGameLife.Source
     [EarlyInit]
     internal class ModEntry : ModBase
     {
-        public ModLogger ModLogger = new ModLogger("BetterGameLife");
+        public ModLogger Debug = new ModLogger("BetterGameLife");
         //public ItemCategory itemCategory;
 
         public ModEntry()

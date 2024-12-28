@@ -5,7 +5,7 @@
 	<BetterSpoils>更好的战利品</BetterSpoils>
 	<BetterSpoilsDesc>小人死亡时剥光下来的衣服不会有死亡标签，只有在腐化时才会有。</BetterSpoilsDesc>
 	<AutoResearch>自动研究</AutoResearch>
-	<AutoResearchDesc>当前无可研究对象时，会自动研究下一个可研究对象</AutoResearchDesc>
+	<AutoResearchDesc>当前无可研究对象时，会自动研究下一个可研究对象(包括异象)</AutoResearchDesc>
 	<TogglePowerInstantly>立刻关闭电源</TogglePowerInstantly>
 	<TogglePowerInstantlyDesc>无需小人操控，立刻关闭电源</TogglePowerInstantlyDesc>
 	<ToggleDoorOpenedInstantly>立刻开关门</ToggleDoorOpenedInstantly>

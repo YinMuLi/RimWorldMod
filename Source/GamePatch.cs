@@ -384,70 +384,70 @@ namespace BetterGameLife.Source
             return true;
         }
 
-        #region 智能控制遇到时间的速度
+        //#region 智能控制遇到时间的速度
 
-        [HarmonyPrefix]
-        [HarmonyPatch(typeof(TimeControls), nameof(TimeControls.DoTimeControlsGUI))]
-        private static void DoTimeControlsGUI(Rect timerRect)
-        {
-            if (Mouse.IsOver(timerRect) && Find.TickManager.slower.ForcedNormalSpeed
-                && (Event.current.button == 1)
-                && Event.current.type == EventType.MouseDown)
-            //限速情况下，鼠标右键
-            {
-                var list = new List<FloatMenuOption>
-                {
-                    new FloatMenuOption("NormalSpeed".Translate(),()=>{ModSettings.curSpeed=SpeedOption.Normal;}),
-                    new FloatMenuOption("FastSpeed".Translate(),()=>{ModSettings.curSpeed=SpeedOption.Fast;}),
-                    new FloatMenuOption("SuperfastSpeed".Translate(),()=>{ModSettings.curSpeed=SpeedOption.Superfast;}),
-                    new FloatMenuOption("UltrafastSpeed".Translate(),()=>{ModSettings.curSpeed=SpeedOption.Ultrafast;}),
-                };
-                var window = new FloatMenu(list);
-                Find.WindowStack.Add(window);
-                Event.current.Use();
-            }
-        }
+        //[HarmonyPrefix]
+        //[HarmonyPatch(typeof(TimeControls), nameof(TimeControls.DoTimeControlsGUI))]
+        //private static void DoTimeControlsGUI(Rect timerRect)
+        //{
+        //    if (Mouse.IsOver(timerRect) && Find.TickManager.slower.ForcedNormalSpeed
+        //        && (Event.current.button == 1)
+        //        && Event.current.type == EventType.MouseDown)
+        //    //限速情况下，鼠标右键
+        //    {
+        //        var list = new List<FloatMenuOption>
+        //        {
+        //            new FloatMenuOption("NormalSpeed".Translate(),()=>{ModSettings.curSpeed=SpeedOption.Normal;}),
+        //            new FloatMenuOption("FastSpeed".Translate(),()=>{ModSettings.curSpeed=SpeedOption.Fast;}),
+        //            new FloatMenuOption("SuperfastSpeed".Translate(),()=>{ModSettings.curSpeed=SpeedOption.Superfast;}),
+        //            new FloatMenuOption("UltrafastSpeed".Translate(),()=>{ModSettings.curSpeed=SpeedOption.Ultrafast;}),
+        //        };
+        //        var window = new FloatMenu(list);
+        //        Find.WindowStack.Add(window);
+        //        Event.current.Use();
+        //    }
+        //}
 
-        private static readonly Func<TickManager, bool> NothingHappeningInGame = AccessTools.MethodDelegate<Func<TickManager, bool>>("TickManager:NothingHappeningInGame");
+        //private static readonly Func<TickManager, bool> NothingHappeningInGame = AccessTools.MethodDelegate<Func<TickManager, bool>>("TickManager:NothingHappeningInGame");
 
-        [HarmonyPostfix]
-        [HarmonyPatch(typeof(TickManager), nameof(TickManager.TickRateMultiplier), MethodType.Getter)]
-        private static void TickRateMultiplier(ref float __result, bool ___UltraSpeedBoost, TickManager __instance)
-        {
-            if (Find.TickManager.slower.ForcedNormalSpeed)
-            {
-                if (__instance.CurTimeSpeed == TimeSpeed.Paused)
-                {
-                    __result = 0f;
-                }
-                switch (ModSettings.curSpeed)
-                {
-                    case SpeedOption.Fast: __result = 3f; break;
-                    case SpeedOption.Superfast:
-                        if (Find.Maps.Count == 0)
-                        {
-                            __result = 120f;
-                        }
-                        if (NothingHappeningInGame.Invoke(__instance))
-                        {
-                            __result = 12f;
-                        }
-                        __result = 6f;
-                        break;
+        //[HarmonyPostfix]
+        //[HarmonyPatch(typeof(TickManager), nameof(TickManager.TickRateMultiplier), MethodType.Getter)]
+        //private static void TickRateMultiplier(ref float __result, bool ___UltraSpeedBoost, TickManager __instance)
+        //{
+        //    if (Find.TickManager.slower.ForcedNormalSpeed)
+        //    {
+        //        if (__instance.CurTimeSpeed == TimeSpeed.Paused)
+        //        {
+        //            __result = 0f;
+        //        }
+        //        switch (ModSettings.curSpeed)
+        //        {
+        //            case SpeedOption.Fast: __result = 3f; break;
+        //            case SpeedOption.Superfast:
+        //                if (Find.Maps.Count == 0)
+        //                {
+        //                    __result = 120f;
+        //                }
+        //                if (NothingHappeningInGame.Invoke(__instance))
+        //                {
+        //                    __result = 12f;
+        //                }
+        //                __result = 6f;
+        //                break;
 
-                    case SpeedOption.Ultrafast:
-                        if (Find.Maps.Count == 0 || ___UltraSpeedBoost)
-                        {
-                            __result = 150f;
-                        }
-                        __result = 15f;
-                        break;
-                }
-            }
-            else { ModSettings.curSpeed = SpeedOption.Normal; }
-        }
+        //            case SpeedOption.Ultrafast:
+        //                if (Find.Maps.Count == 0 || ___UltraSpeedBoost)
+        //                {
+        //                    __result = 150f;
+        //                }
+        //                __result = 15f;
+        //                break;
+        //        }
+        //    }
+        //    //else { ModSettings.curSpeed = SpeedOption.Normal; }
+        //}
 
-        #endregion 智能控制遇到时间的速度
+        //#endregion 智能控制遇到时间的速度
 
         //private static readonly Action<TransferableOneWayWidget> CacheTransferables = AccessTools.MethodDelegate<Action<TransferableOneWayWidget>>("TransferableOneWayWidget:CacheTransferables");
         //private static Type InnerSection = AccessToolsExtensions.InnerTypes(typeof(TransferableOneWayWidget)).FirstOrDefault();
@@ -485,9 +485,10 @@ namespace BetterGameLife.Source
 
         //[HarmonyPostfix]
         //[HarmonyPatch(typeof(TransferableOneWayWidget), "CacheTransferables")]
-        //private static void CacheTransferables_Post()
+        //private static void CacheTransferables_Post(TransferableOneWayWidget __instance)
         //{
-        //    //section是个内部结构类，不会获取
+        //    var sections = Traverse.Create(__instance).Field("sections").GetValue();
+        //    ModEntry.Instance.Debug.Warning(sections.ToString());
         //}
 
         [HarmonyPostfix]
