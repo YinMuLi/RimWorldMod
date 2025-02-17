@@ -5,8 +5,10 @@ using RimWorld.Planet;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Emit;
 using UnityEngine;
 using Verse;
+using Verse.AI;
 using Verse.Sound;
 using static Verse.DamageWorker;
 
@@ -72,19 +74,19 @@ namespace BetterGameLife.Source
             }
         }
 
-        [HarmonyPrefix]
-        [HarmonyPatch(typeof(Pawn_ApparelTracker), nameof(Pawn_ApparelTracker.TryDrop))]
-        [HarmonyPatch(new Type[] { typeof(Apparel), typeof(Apparel), typeof(IntVec3), typeof(bool) },
-            new ArgumentType[] { ArgumentType.Normal, ArgumentType.Out, ArgumentType.Normal, ArgumentType.Normal })]
-        private static bool TryDrop(Pawn_ApparelTracker __instance, Apparel ap, ref bool __result)
-        {
-            if (ModEntry.Instance.Handles.OnlyDropSmeltableApperal && __instance.pawn.Dead && !ap.Smeltable)
-            {
-                __result = false;
-                return false;
-            }
-            return true;
-        }
+        //[HarmonyPrefix]
+        //[HarmonyPatch(typeof(Pawn_ApparelTracker), nameof(Pawn_ApparelTracker.TryDrop))]
+        //[HarmonyPatch(new Type[] { typeof(Apparel), typeof(Apparel), typeof(IntVec3), typeof(bool) },
+        //    new ArgumentType[] { ArgumentType.Normal, ArgumentType.Out, ArgumentType.Normal, ArgumentType.Normal })]
+        //private static bool TryDrop(Pawn_ApparelTracker __instance, Apparel ap, ref bool __result)
+        //{
+        //    if (ModEntry.Instance.Handles.OnlyDropSmeltableApperal && __instance.pawn.Dead && !ap.Smeltable)
+        //    {
+        //        __result = false;
+        //        return false;
+        //    }
+        //    return true;
+        //}
 
         #endregion 尸体腐烂小人穿的衣服才会有“已亡”
 
@@ -497,5 +499,14 @@ namespace BetterGameLife.Source
         {
             __result += $"\n<b><color=#45B39D><{__instance.def.modContentPack.Name}></color></b>";
         }
+
+        //[HarmonyPrefix]
+        //[HarmonyPatch(typeof(GameInitData), nameof(GameInitData.PrepForMapGen))]
+        //private static void PrepForMapGen()
+        //{
+        //    foreach (var work in DefDatabase<WorkTypeDef>.AllDefs)
+        //    {
+        //    }
+        //}
     }
 }

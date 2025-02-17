@@ -8,6 +8,9 @@ using Verse;
 
 namespace BetterGameLife.Source.ShowTrade
 {
+    /// <summary>
+    /// Dialog_Trade
+    /// </summary>
     internal class Dialog_TradeableGoods : Window
     {
         protected static readonly Vector2 ButtonSize = new Vector2(160f, 40f);
@@ -17,7 +20,7 @@ namespace BetterGameLife.Source.ShowTrade
         private Settlement settlement;
 
         //private List<TradeableGroup> displayGroup = [];
-        private Tradeable holdCurrency;//商队持有的金钱
+        private Tradeable cachedCurrencyTradeable;//商队持有的金钱
 
         private Pawn negotiator;
         private readonly float negotiatorStat;
@@ -61,7 +64,7 @@ namespace BetterGameLife.Source.ShowTrade
                 num += 50f;
             }
             //显示交易对所持有的金钱,-16:下方滑轮占16
-            DrawTradeableRow(new Rect(0f, num, inRect.width - 16f, 30f), holdCurrency, 1);
+            DrawTradeableRow(new Rect(0f, num, inRect.width - 16f, 30f), cachedCurrencyTradeable, 1);
             num += 30f;
             //主要内容
             Widgets.DrawLineHorizontal(0, num, inRect.width);
@@ -178,8 +181,12 @@ namespace BetterGameLife.Source.ShowTrade
                 tradeable.AddThing(good, Transactor.Trader);
             }
             //Currency:货币
-            holdCurrency = GenCollection.FirstOrDefault<Tradeable>(cachedTradeables, x => x.IsCurrency && !x.IsFavor);
-            cachedTradeables = cachedTradeables.Where(tr => !tr.IsCurrency && (trader.TraderKind.WillTrade(tr.ThingDef) || !TradeSession.trader.TraderKind.hideThingsNotWillingToTrade)).ToList();
+            cachedCurrencyTradeable = GenCollection.FirstOrDefault<Tradeable>(cachedTradeables, x => x.IsCurrency && !x.IsFavor);
+
+            cachedTradeables = cachedTradeables.
+                Where(tr => !tr.IsCurrency && (trader.TraderKind.WillTrade(tr.ThingDef) || !TradeSession.trader.TraderKind.hideThingsNotWillingToTrade))
+               .ToList();
+
             //对物品进行分组
             //displayGroup.Add(new TradeableGroup
             //{

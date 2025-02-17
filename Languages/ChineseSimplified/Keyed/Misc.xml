@@ -5,10 +5,11 @@
 	<WindowTitle>{0} 的待售物品 (货物刷新剩余 {1})</WindowTitle>
 	<BestPawn>你最佳交易者为 {0} ({1} 的价格改善,显示的物品价格已计算价格改善)</BestPawn>
 	<!--智能速度-->
+	<!--
 	<NormalSpeed>正常速度</NormalSpeed>
 	<FastSpeed>快速</FastSpeed>
 	<SuperfastSpeed>非常快</SuperfastSpeed>
-	<UltrafastSpeed>超级快</UltrafastSpeed>
+	<UltrafastSpeed>超级快</UltrafastSpeed>-->
 
-	<AllCategory>全部类别</AllCategory>
+	<!--<AllCategory>全部类别</AllCategory>-->
 </LanguageData>

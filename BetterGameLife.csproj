@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Source\Misc\ItemCategory.cs" />
+    <Compile Include="Source\Patches\MechCanOperateDeepDrill.cs" />
     <Compile Include="Source\Utils\Enums.cs" />
     <Compile Include="Source\Utils\Extensions.cs" />
     <Compile Include="Source\Utils\globalUsings.cs" />
@@ -79,10 +80,9 @@
     <Content Include="Languages\ChineseSimplified\Keyed\Settings.xml" />
     <Content Include="Languages\ChineseSimplified\Keyed\Misc.xml" />
     <Content Include="Patches\UniversalStone.xml" />
+    <Content Include="Patches\AllowMechToDrill.xml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Source\Patches\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <LangVersion>preview</LangVersion>

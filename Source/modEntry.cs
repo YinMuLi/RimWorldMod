@@ -50,6 +50,14 @@ namespace BetterGameLife.Source
                 //    thingDef.thingCategories.Add(rot);
                 //    rot.childThingDefs.Add(thingDef);
                 //}
+                //需要研究的物品，大多是Boss掉落，提高耐久度
+                if (thingDef.HasComp<CompAnalyzableUnlockResearch>())
+                {
+                    //信息显示界面上还会显示耐久度
+                    thingDef.SetStatBaseValue(StatDefOf.Flammability, 0f);//易燃
+                    thingDef.SetStatBaseValue(StatDefOf.DeteriorationRate, 0f);//老化速度
+                    thingDef.useHitPoints = false;
+                }
             }
             //rot.ClearCachedData();
             //rot.ResolveReferences();
@@ -84,6 +92,7 @@ namespace BetterGameLife.Source
 
         public override void Tick(int currentTick)
         {
+            //currentTick会一直增加
             //TODO: 增加检测间隔
             if (Handles.autoResearch && Find.ResearchManager.GetProject() == null)
             {
@@ -100,7 +109,7 @@ namespace BetterGameLife.Source
         {
             if (def.modContentPack != null)
             {
-                def.description += $"\n<b><color=#45B39D><{def.modContentPack.Name}></color></b>";
+                def.description += $"\n<i><b><color=#45B39D>{def.modContentPack.Name}</color></b></i>";
                 //def.description += $"\n<b><{def.modContentPack.Name.Colorize(Color.gray)}></b>";
             }
         }
