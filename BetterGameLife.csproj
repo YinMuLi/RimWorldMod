@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Source\Misc\ItemCategory.cs" />
+    <Compile Include="Source\Others\Designator_DeconstructPowerConduit.cs" />
     <Compile Include="Source\Patches\MechCanOperateDeepDrill.cs" />
     <Compile Include="Source\Utils\Enums.cs" />
     <Compile Include="Source\Utils\Extensions.cs" />
@@ -79,6 +80,8 @@
     <Content Include="Languages\ChineseSimplified\DefInjected\ThingCategoryDef\ThingCategories.xml" />
     <Content Include="Languages\ChineseSimplified\Keyed\Settings.xml" />
     <Content Include="Languages\ChineseSimplified\Keyed\Misc.xml" />
+    <Content Include="Languages\ChineseSimplified\Keyed\Designators.xml" />
+    <Content Include="Patches\Designation.xml" />
     <Content Include="Patches\UniversalStone.xml" />
     <Content Include="Patches\AllowMechToDrill.xml" />
   </ItemGroup>
