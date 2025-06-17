@@ -44,12 +44,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Source\Misc\ItemCategory.cs" />
-    <Compile Include="Source\Others\Designator_DeconstructPowerConduit.cs" />
-    <Compile Include="Source\Patches\MechCanOperateDeepDrill.cs" />
-    <Compile Include="Source\Utils\Enums.cs" />
     <Compile Include="Source\Utils\Extensions.cs" />
-    <Compile Include="Source\Utils\globalUsings.cs" />
-    <Compile Include="Source\Utils\ModDefOf.cs" />
     <Compile Include="Source\ModEntry.cs" />
     <Compile Include="Source\ModSettings.cs" />
     <Compile Include="Source\ShowTrade\ShowTradeablePatch.cs" />
@@ -61,13 +56,13 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Krafs.Rimworld.Ref">
-      <Version>1.5.4243</Version>
+      <Version>1.5.4409</Version>
     </PackageReference>
     <PackageReference Include="Lib.Harmony">
-      <Version>2.3.3</Version>
+      <Version>2.3.6</Version>
     </PackageReference>
     <PackageReference Include="UnlimitedHugs.Rimworld.HugsLib">
-      <Version>11.0.3</Version>
+      <Version>11.0.5</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
@@ -83,9 +78,10 @@
     <Content Include="Languages\ChineseSimplified\Keyed\Designators.xml" />
     <Content Include="Patches\Designation.xml" />
     <Content Include="Patches\UniversalStone.xml" />
-    <Content Include="Patches\AllowMechToDrill.xml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Source\Patches\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <LangVersion>preview</LangVersion>

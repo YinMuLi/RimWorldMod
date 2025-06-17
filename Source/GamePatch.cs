@@ -140,8 +140,7 @@ namespace BetterGameLife.Source
         [HarmonyPatch(typeof(Plant), nameof(Plant.TrySpawnStump))]
         private static void TrySpawnStump(Plant __instance, PlantDestructionMode treeDestructionMode, Thing __result)
         {
-            if (__result != null && treeDestructionMode == PlantDestructionMode.Chop &&
-                ModEntry.Instance.Handles.autoChopStumps)
+            if (__result != null && treeDestructionMode == PlantDestructionMode.Chop)
             {
                 __instance.Map.designationManager.AddDesignation(new Designation(__result, DesignationDefOf.HarvestPlant));
             }
@@ -197,7 +196,7 @@ namespace BetterGameLife.Source
 
         #endregion 显示伤害
 
-        #region 机械师无视距离控制机器（不过我也不怎么玩机械师）
+        #region 机械师无视距离控制机器（不过我也不怎么玩机械师，收回前话机械族真香）
 
         //现在：机械师只是个培育机械的后勤人员了
         //Mechanitor:机械控制器
@@ -233,7 +232,7 @@ namespace BetterGameLife.Source
             }
         }
 
-        #endregion 机械师无视距离控制机器（不过我也不怎么玩机械师）
+        #endregion 机械师无视距离控制机器（不过我也不怎么玩机械师，收回前话机械族真香）
 
         //不显示泰南语
         [HarmonyPrefix]
@@ -297,55 +296,39 @@ namespace BetterGameLife.Source
             return false;
         }
 
-        #region 删减开局管理中的一些没用配置
-
-        //食物
-        //[HarmonyPrefix]
-        //[HarmonyPatch(typeof(FoodRestrictionDatabase), "GenerateStartingFoodRestrictions")]
-        //private static bool GenerateStartingFoodRestrictions(FoodRestrictionDatabase __instance)
-        //{
-        //    __instance.MakeNewFoodRestriction().label = "FoodRestrictionLavish".Translate();
-        //    return false;
-        //}
-
-        ////穿着
-        //[HarmonyPrefix]
-        //[HarmonyPatch(typeof(OutfitDatabase), "GenerateStartingOutfits")]
-        //private static bool GenerateStartingOutfits(OutfitDatabase __instance)
-        //{
-        //    __instance.MakeNewOutfit().label = "OutfitAnything".Translate();
-        //    return false;
-        //}
-
-        //成瘾品的配置是写在XML中的
-
-        #endregion 删减开局管理中的一些没用配置
-
-        //[HarmonyPostfix]
-        //[HarmonyPatch(typeof(GlowGrid), "GroundGlowAt")]
-        //private static void GroundGlowAt(ref float __result, IntVec3 c, Map ___map)
-        //{
-        //    if (___map.roofGrid.RoofAt(c) == RoofDefOf.RoofConstructed)
-        //    {
-        //        float num = ___map.skyManager.CurSkyGlow;
-        //        if (num > __result)
-        //        {
-        //            __result = num;
-        //        }
-        //    }
-        //}
         //彩色品质
         public static void ColorQuality(QualityCategory cat, ref string __result)
         {
             switch (cat)
             {
-                case QualityCategory.Legendary: __result = __result.Colorize(new Color(255, 215, 0)); break;//金色
-                case QualityCategory.Masterwork: __result = __result.Colorize(Color.red); break;
-                case QualityCategory.Excellent: __result = __result.Colorize(new Color(128, 0, 128)); break;//紫色
-                case QualityCategory.Good: __result = __result.Colorize(Color.green); break;
-                //case QualityCategory.Normal: __result = __result.Colorize(Color.black); break;
-                case QualityCategory.Poor: __result = __result.Colorize(Color.gray); break;
-                case QualityCategory.Awful: __result = __result.Colorize(Color.gray); break;
+                //AI写的
+                case QualityCategory.Legendary:
+                    __result = __result.Colorize(new Color(230, 175, 25)); // 深金色，接近古铜色，体现传奇武器的古老和珍贵
+                    break;
+
+                case QualityCategory.Masterwork:
+                    __result = __result.Colorize(new Color(220, 60, 60)); // 暗红，比纯红更具军事感
+                    break;
+
+                case QualityCategory.Excellent:
+                    __result = __result.Colorize(new Color(160, 70, 200)); // 亮紫色，提高可见性
+                    break;
+
+                case QualityCategory.Good:
+                    __result = __result.Colorize(new Color(65, 170, 70)); // 军绿色，符合游戏军事主题
+                    break;
+
+                case QualityCategory.Normal:
+                    __result = __result.Colorize(new Color(100, 100, 100)); // 中灰色，正常品质不突出显示
+                    break;
+
+                case QualityCategory.Poor:
+                    __result = __result.Colorize(new Color(140, 140, 140)); // 浅灰色，比正常品质略亮
+                    break;
+
+                case QualityCategory.Awful:
+                    __result = __result.Colorize(new Color(70, 70, 70)); // 深灰色，最差品质更暗淡
+                    break;
             }
         }
 
@@ -386,127 +369,11 @@ namespace BetterGameLife.Source
             return true;
         }
 
-        //#region 智能控制遇到时间的速度
-
-        //[HarmonyPrefix]
-        //[HarmonyPatch(typeof(TimeControls), nameof(TimeControls.DoTimeControlsGUI))]
-        //private static void DoTimeControlsGUI(Rect timerRect)
-        //{
-        //    if (Mouse.IsOver(timerRect) && Find.TickManager.slower.ForcedNormalSpeed
-        //        && (Event.current.button == 1)
-        //        && Event.current.type == EventType.MouseDown)
-        //    //限速情况下，鼠标右键
-        //    {
-        //        var list = new List<FloatMenuOption>
-        //        {
-        //            new FloatMenuOption("NormalSpeed".Translate(),()=>{ModSettings.curSpeed=SpeedOption.Normal;}),
-        //            new FloatMenuOption("FastSpeed".Translate(),()=>{ModSettings.curSpeed=SpeedOption.Fast;}),
-        //            new FloatMenuOption("SuperfastSpeed".Translate(),()=>{ModSettings.curSpeed=SpeedOption.Superfast;}),
-        //            new FloatMenuOption("UltrafastSpeed".Translate(),()=>{ModSettings.curSpeed=SpeedOption.Ultrafast;}),
-        //        };
-        //        var window = new FloatMenu(list);
-        //        Find.WindowStack.Add(window);
-        //        Event.current.Use();
-        //    }
-        //}
-
-        //private static readonly Func<TickManager, bool> NothingHappeningInGame = AccessTools.MethodDelegate<Func<TickManager, bool>>("TickManager:NothingHappeningInGame");
-
-        //[HarmonyPostfix]
-        //[HarmonyPatch(typeof(TickManager), nameof(TickManager.TickRateMultiplier), MethodType.Getter)]
-        //private static void TickRateMultiplier(ref float __result, bool ___UltraSpeedBoost, TickManager __instance)
-        //{
-        //    if (Find.TickManager.slower.ForcedNormalSpeed)
-        //    {
-        //        if (__instance.CurTimeSpeed == TimeSpeed.Paused)
-        //        {
-        //            __result = 0f;
-        //        }
-        //        switch (ModSettings.curSpeed)
-        //        {
-        //            case SpeedOption.Fast: __result = 3f; break;
-        //            case SpeedOption.Superfast:
-        //                if (Find.Maps.Count == 0)
-        //                {
-        //                    __result = 120f;
-        //                }
-        //                if (NothingHappeningInGame.Invoke(__instance))
-        //                {
-        //                    __result = 12f;
-        //                }
-        //                __result = 6f;
-        //                break;
-
-        //            case SpeedOption.Ultrafast:
-        //                if (Find.Maps.Count == 0 || ___UltraSpeedBoost)
-        //                {
-        //                    __result = 150f;
-        //                }
-        //                __result = 15f;
-        //                break;
-        //        }
-        //    }
-        //    //else { ModSettings.curSpeed = SpeedOption.Normal; }
-        //}
-
-        //#endregion 智能控制遇到时间的速度
-
-        //private static readonly Action<TransferableOneWayWidget> CacheTransferables = AccessTools.MethodDelegate<Action<TransferableOneWayWidget>>("TransferableOneWayWidget:CacheTransferables");
-        //private static Type InnerSection = AccessToolsExtensions.InnerTypes(typeof(TransferableOneWayWidget)).FirstOrDefault();
-
-        //[HarmonyPostfix]
-        //[HarmonyPatch(typeof(TransferableOneWayWidget), nameof(TransferableOneWayWidget.OnGUI))]
-        //[HarmonyPatch([typeof(Rect), typeof(bool)], [ArgumentType.Normal, ArgumentType.Out])]
-        //private static void OnGUI(TransferableOneWayWidget __instance)
-        //{
-        //    GUI.BeginGroup(new Rect(540f, 0f, 525f, 27f));
-        //    //Text.Font = GameFont.Tiny;
-        //    //Text.Anchor = TextAnchor.LowerCenter;
-        //    if (Widgets.ButtonText(new Rect(0f, 0f, 80f, 27f), ModEntry.Instance.itemCategory.Label))
-        //    {
-        //        List<FloatMenuOption> list = new List<FloatMenuOption>();
-        //        list.Add(new FloatMenuOption("AllCategory".Translate(), () =>
-        //        {
-        //            ModEntry.Instance.itemCategory = new ItemCategory();
-        //            CacheTransferables.Invoke(__instance);
-        //        }));
-        //        foreach (var item in DefDatabase<ThingCategoryDef>.AllDefsListForReading
-        //            .Where(t => t.parent == ThingCategoryDefOf.Root))
-        //        {
-        //            list.Add(new FloatMenuOption(item.LabelCap, () =>
-        //            {
-        //                ModEntry.Instance.itemCategory = new ItemCategory(item);
-        //                CacheTransferables.Invoke(__instance);
-        //            }));
-        //        }
-
-        //        Find.WindowStack.Add(new FloatMenu(list));
-        //    }
-        //    Widgets.EndGroup();
-        //}
-
-        //[HarmonyPostfix]
-        //[HarmonyPatch(typeof(TransferableOneWayWidget), "CacheTransferables")]
-        //private static void CacheTransferables_Post(TransferableOneWayWidget __instance)
-        //{
-        //    var sections = Traverse.Create(__instance).Field("sections").GetValue();
-        //    ModEntry.Instance.Debug.Warning(sections.ToString());
-        //}
-
         [HarmonyPostfix]
         [HarmonyPatch(typeof(Trait), nameof(Trait.TipString))]
         private static void TraitTipString(ref string __result, Trait __instance)
         {
             __result += $"\n<b><color=#45B39D><{__instance.def.modContentPack.Name}></color></b>";
         }
-
-        //[HarmonyPrefix]
-        //[HarmonyPatch(typeof(GameInitData), nameof(GameInitData.PrepForMapGen))]
-        //private static void PrepForMapGen()
-        //{
-        //    foreach (var work in DefDatabase<WorkTypeDef>.AllDefs)
-        //    {
-        //    }
-        //}
     }
 }

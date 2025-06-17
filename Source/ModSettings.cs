@@ -9,12 +9,9 @@ namespace BetterGameLife.Source
     /// </summary>
     internal class ModSettings
     {
-        public SettingHandle<bool> autoChopStumps;//自动砍伐树桩
-
         public SettingHandle<bool> autoResearch;//自动研究
         public SettingHandle<bool> TogglePowerInstantly;//立刻切换电源
-        public SettingHandle<bool> ToggleDoorOpenedInstantly;//立刻门
-        //public SettingHandle<bool> OnlyDropSmeltableApperal;//屠宰只掉落可熔炼的衣物
+        public SettingHandle<bool> ToggleDoorOpenedInstantly;//立刻开门
 
         /// <summary>
         /// spoils:战利品
@@ -23,11 +20,6 @@ namespace BetterGameLife.Source
 
         public void Read(ModSettingsPack pack)
         {
-            autoChopStumps = pack.GetHandle(
-               "AutoChopStumps",
-               "AutoChopStumps".Translate(),
-               "AutoChopStumpsDesc".Translate(), true
-               );
             betterSpoils = pack.GetHandle(
                "BetterSpoils",
                "BetterSpoils".Translate(),
@@ -48,10 +40,6 @@ namespace BetterGameLife.Source
                  "ToggleDoorOpenedInstantly".Translate(),
                  "ToggleDoorOpenedInstantlyDesc".Translate(),
                  true);
-            //OnlyDropSmeltableApperal = pack.GetHandle(
-            //    "OnlyDropSmeltableApperal",
-            //    "OnlyDropSmeltableApperal".Translate(),
-            //    "OnlyDropSmeltableApperalDesc".Translate(), true);
         }
     }
 }

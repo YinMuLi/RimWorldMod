@@ -12,7 +12,6 @@ namespace BetterGameLife.Source
     internal class ModEntry : ModBase
     {
         public ModLogger Debug = new ModLogger("BetterGameLife");
-        //public ItemCategory itemCategory;
 
         public ModEntry()
         {
@@ -38,18 +37,11 @@ namespace BetterGameLife.Source
         {
             if (!ModIsActive) return;
             Handles.Read(Settings);
-            //var rot = DefDatabase<ThingCategoryDef>.GetNamed("OrganicMatter");
             foreach (var thingDef in DefDatabase<ThingDef>.AllDefs)
             {
                 //所有堆叠数大于一的物品存储容量*20（SOS2不太够用）
                 if (thingDef.stackLimit > 1) thingDef.stackLimit *= 20;
-                //不是尸体，有腐烂度
-                //TODO:动态创建新的分组，就用thingDef的分组名称
-                //if (thingDef.HasComp<CompRottable>() && !thingDef.IsCorpse)
-                //{
-                //    thingDef.thingCategories.Add(rot);
-                //    rot.childThingDefs.Add(thingDef);
-                //}
+
                 //需要研究的物品，大多是Boss掉落，提高耐久度
                 if (thingDef.HasComp<CompAnalyzableUnlockResearch>())
                 {
@@ -59,19 +51,7 @@ namespace BetterGameLife.Source
                     thingDef.useHitPoints = false;
                 }
             }
-            //rot.ClearCachedData();
-            //rot.ResolveReferences();
 
-            //配方
-            //foreach (var recipe in DefDatabase<RecipeDef>.AllDefs)
-            //{
-            //    //在制作衣物列表显示衣物的覆盖层
-            //    if (recipe.ProducedThingDef?.IsApparel ?? false)
-            //    {
-            //        recipe.label += $" [{recipe.ProducedThingDef.apparel.GetLayersString()}]"
-            //            .Colorize(Color.cyan);
-            //    }
-            //}
             foreach (var type in GenDefDatabase.AllDefTypesWithDatabases())
             {
                 foreach (var def in (IEnumerable)GenGeneric.GetStaticPropertyOnGenericType(typeof(DefDatabase<>), type, "AllDefs"))
@@ -110,7 +90,6 @@ namespace BetterGameLife.Source
             if (def.modContentPack != null)
             {
                 def.description += $"\n<i><b><color=#45B39D>{def.modContentPack.Name}</color></b></i>";
-                //def.description += $"\n<b><{def.modContentPack.Name.Colorize(Color.gray)}></b>";
             }
         }
     }
