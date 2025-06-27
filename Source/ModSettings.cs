@@ -1,8 +1,8 @@
-﻿using BetterGameLife.Source.Utils;
+﻿using RimEase.Source.Utils;
 using HugsLib.Settings;
 using Verse;
 
-namespace BetterGameLife.Source
+namespace RimEase.Source
 {
     /// <summary>
     /// 模组的设置暂时这么写

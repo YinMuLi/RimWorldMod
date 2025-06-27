@@ -1,4 +1,4 @@
-﻿using BetterGameLife.Source.Utils;
+﻿using RimEase.Source.Utils;
 using HarmonyLib;
 using RimWorld;
 using RimWorld.Planet;
@@ -12,7 +12,7 @@ using Verse.AI;
 using Verse.Sound;
 using static Verse.DamageWorker;
 
-namespace BetterGameLife.Source
+namespace RimEase.Source
 {
     /// <summary>
     /// 类上一定要加[Harmony]

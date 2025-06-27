@@ -6,18 +6,18 @@ using System.Collections;
 using System.Linq;
 using Verse;
 
-namespace BetterGameLife.Source
+namespace RimEase.Source
 {
     [EarlyInit]
     internal class ModEntry : ModBase
     {
-        public ModLogger Debug = new ModLogger("BetterGameLife");
+        public ModLogger Debug = new ModLogger("RimEase");
 
         public ModEntry()
         {
             Instance = this;
             //itemCategory = new ItemCategory();
-            HarmonyInst = new Harmony("YinMu.BetterGameLife");
+            HarmonyInst = new Harmony("YinMu.RimEase");
             HarmonyInst.Patch(AccessTools.Method(typeof(QualityUtility), nameof(QualityUtility.GetLabel)), postfix: new HarmonyMethod(typeof(GamePatch), nameof(GamePatch.ColorQuality)));
             HarmonyInst.Patch(AccessTools.Method(typeof(QualityUtility), nameof(QualityUtility.GetLabelShort)), postfix: new HarmonyMethod(typeof(GamePatch), nameof(GamePatch.ColorQuality)));
             HarmonyInst.PatchAll();
@@ -30,7 +30,7 @@ namespace BetterGameLife.Source
         /// </summary>
         public ModSettings Handles { get; private set; }
 
-        public override string ModIdentifier => "BetterGameLife";
+        public override string ModIdentifier => "RimEase";
         protected override bool HarmonyAutoPatch => false;
 
         public override void DefsLoaded()
@@ -64,10 +64,6 @@ namespace BetterGameLife.Source
         public override void EarlyInitialize()
         {
             Handles = new ModSettings();
-        }
-
-        public override void StaticInitialize()
-        {
         }
 
         public override void Tick(int currentTick)

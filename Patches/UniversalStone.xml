@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Patch>
-    <!-- 砂岩砖 -->
+	<!-- 砂岩砖 -->
+	<!--
     <Operation Class="PatchOperationSequence">
         <operations>
             <li Class="PatchOperationReplace">
@@ -26,7 +27,9 @@
         </operations>
     </Operation>
 
-    <!-- 花岗岩 -->
+    -->
+	<!-- 花岗岩 -->
+	<!--
     <Operation Class="PatchOperationSequence">
         <operations>
             <li Class="PatchOperationReplace">
@@ -52,7 +55,9 @@
         </operations>
     </Operation>
 
-    <!-- 石灰石 -->
+    -->
+	<!-- 石灰石 -->
+	<!--
     <Operation Class="PatchOperationSequence">
         <operations>
             <li Class="PatchOperationReplace">
@@ -78,7 +83,9 @@
         </operations>
     </Operation>
 
-    <!-- 板岩 -->
+    -->
+	<!-- 板岩 -->
+	<!--
     <Operation Class="PatchOperationSequence">
         <operations>
             <li Class="PatchOperationReplace">
@@ -104,7 +111,9 @@
         </operations>
     </Operation>
 
-    <!-- 大理石（为什么主角最后登场） -->
+    -->
+	<!-- 大理石（为什么主角最后登场） -->
+	<!--
     <Operation Class="PatchOperationSequence">
         <operations>
             <li Class="PatchOperationReplace">
@@ -128,5 +137,27 @@
                 </value>
             </li>
         </operations>
-    </Operation>
+    </Operation>-->
+	<!-- 仅修改Core命名空间下的原版石材配方 -->
+	<Operation Class="PatchOperationReplace">
+		<xpath>Defs/RecipeDef[defName[starts-with(., "Make_StoneBlocks")] and @ParentName="Core"]/ingredients/li/filter</xpath>
+		<value>
+			<filter>
+				<categories>
+					<li>StoneChunks</li>
+				</categories>
+			</filter>
+		</value>
+	</Operation>
+
+	<Operation Class="PatchOperationReplace">
+		<xpath>Defs/RecipeDef[defName[starts-with(., "Make_StoneBlocks")] and @ParentName="Core"]/fixedIngredientFilter</xpath>
+		<value>
+			<fixedIngredientFilter>
+				<categories>
+					<li>StoneChunks</li>
+				</categories>
+			</fixedIngredientFilter>
+		</value>
+	</Operation>
 </Patch>

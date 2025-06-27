@@ -5,7 +5,7 @@
 //using System.Threading.Tasks;
 //using Verse;
 
-//namespace BetterGameLife.Source.Misc
+//namespace RimEase.Source.Misc
 //{
 //    /// <summary>
 //    /// 物品分类，用于远征队与其它类似界面的物品分类

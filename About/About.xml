@@ -1,12 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ModMetaData>
-	<name>[YM]更好的游戏体验</name>
+	<name>RimEase</name>
 	<author>饮木</author>
 	<supportedVersions>
-		<li>1.4</li>
-		<li>1.5</li>
+		<li>1.6</li>
 	</supportedVersions>
-	<packageId>YinMu.ImproveGameLife</packageId>
+	<packageId>YinMu.RimEase</packageId>
 	<description>主要功能见项目的README.ME</description>
 	<!--<modDependencies>
 		<li>

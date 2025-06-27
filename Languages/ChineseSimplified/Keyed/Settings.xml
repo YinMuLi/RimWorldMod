@@ -1,7 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <LanguageData>
-	<AutoChopStumps>砍一棵树</AutoChopStumps>
-	<AutoChopStumpsDesc>伐木时会自动砍伐剩下的树桩。</AutoChopStumpsDesc>
 	<BetterSpoils>更好的战利品</BetterSpoils>
 	<BetterSpoilsDesc>小人死亡时剥光下来的衣服不会有死亡标签，只有在腐化时才会有。</BetterSpoilsDesc>
 	<AutoResearch>自动研究</AutoResearch>
@@ -10,6 +8,4 @@
 	<TogglePowerInstantlyDesc>无需小人操控，立刻关闭电源</TogglePowerInstantlyDesc>
 	<ToggleDoorOpenedInstantly>立刻开关门</ToggleDoorOpenedInstantly>
 	<ToggleDoorOpenedInstantlyDesc>无需小人，立刻开关门</ToggleDoorOpenedInstantlyDesc>
-	<!--<OnlyDropSmeltableApperal>仅可熔炼衣物</OnlyDropSmeltableApperal>
-	<OnlyDropSmeltableApperalDesc>小人屠宰或剥光死人衣物时只会掉落可熔炼</OnlyDropSmeltableApperalDesc>-->
 </LanguageData>

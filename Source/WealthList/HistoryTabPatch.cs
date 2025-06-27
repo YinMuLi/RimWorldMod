@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEngine;
 using Verse;
 
-namespace BetterGameLife.Source.WealthList
+namespace RimEase.Source.WealthList
 {
     //不显示财富
     //[Harmony]

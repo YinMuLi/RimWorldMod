@@ -2,7 +2,7 @@
 <Defs>
 	<!--<JobDef>
 		<defName>ImprisonInPlace</defName>
-		<driverClass>BetterGameLife.Source.ArrestHere.JobDriver_ImprisonInPlace</driverClass>
+		<driverClass>RimEase.Source.ArrestHere.JobDriver_ImprisonInPlace</driverClass>
 		<reportString>imprisoning TargetA.</reportString>
 		<alwaysShowWeapon>true</alwaysShowWeapon>
 		<makeTargetPrisoner>true</makeTargetPrisoner>

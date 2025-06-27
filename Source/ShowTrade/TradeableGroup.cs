@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Verse;
 
-namespace BetterGameLife.Source.ShowTrade
+namespace RimEase.Source.ShowTrade
 {
     internal class TradeableGroup
     {

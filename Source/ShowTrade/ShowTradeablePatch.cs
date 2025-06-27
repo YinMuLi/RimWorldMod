@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Verse;
 
-namespace BetterGameLife.Source.ShowTrade
+namespace RimEase.Source.ShowTrade
 {
     [HarmonyPatch(typeof(Settlement), nameof(Settlement.GetGizmos))]
     internal class ShowTradeablePatch

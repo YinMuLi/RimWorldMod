@@ -6,7 +6,7 @@ using System.Reflection;
 using UnityEngine;
 using Verse;
 
-namespace BetterGameLife.Source.ShowTrade
+namespace RimEase.Source.ShowTrade
 {
     /// <summary>
     /// Dialog_Trade
