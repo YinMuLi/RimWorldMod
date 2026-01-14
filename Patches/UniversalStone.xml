@@ -139,7 +139,7 @@
         </operations>
     </Operation>-->
 	<!-- 仅修改Core命名空间下的原版石材配方 -->
-	<Operation Class="PatchOperationReplace">
+	<!--<Operation Class="PatchOperationReplace">
 		<xpath>Defs/RecipeDef[defName[starts-with(., "Make_StoneBlocks")] and @ParentName="Core"]/ingredients/li/filter</xpath>
 		<value>
 			<filter>
@@ -159,5 +159,5 @@
 				</categories>
 			</fixedIngredientFilter>
 		</value>
-	</Operation>
+	</Operation>-->
 </Patch>

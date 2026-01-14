@@ -41,55 +41,6 @@ namespace RimEase.Source
             }
         }
 
-        #region 尸体腐烂小人穿的衣服才会有“已亡”
-
-        [HarmonyPostfix]
-        [HarmonyPatch(typeof(Apparel), nameof(Apparel.Notify_PawnKilled))]
-        private static void Notify_PawnKilled(Apparel __instance)
-        {
-            if (ModEntry.Instance.Handles.betterSpoils)
-            {
-                __instance.WornByCorpse = false;
-            }
-        }
-
-        /// <summary>
-        /// 当尸体开始腐烂，衣服打上“亡者”标签
-        /// </summary>
-        [HarmonyPostfix]
-        [HarmonyPatch(typeof(Corpse), nameof(Corpse.RotStageChanged))]
-        private static void RotStageChanged(Corpse __instance)
-        {
-            /**
-             * Corpse:尸体 Rot
-             * :腐烂
-             */
-            if (ModEntry.Instance.Handles.betterSpoils && __instance.InnerPawn.apparel != null)
-            {
-                var apparels = (ThingOwner<Apparel>)__instance.InnerPawn.apparel.GetDirectlyHeldThings();
-                for (int i = 0; i < apparels.Count; i++)
-                {
-                    apparels[i].WornByCorpse = true;
-                }
-            }
-        }
-
-        //[HarmonyPrefix]
-        //[HarmonyPatch(typeof(Pawn_ApparelTracker), nameof(Pawn_ApparelTracker.TryDrop))]
-        //[HarmonyPatch(new Type[] { typeof(Apparel), typeof(Apparel), typeof(IntVec3), typeof(bool) },
-        //    new ArgumentType[] { ArgumentType.Normal, ArgumentType.Out, ArgumentType.Normal, ArgumentType.Normal })]
-        //private static bool TryDrop(Pawn_ApparelTracker __instance, Apparel ap, ref bool __result)
-        //{
-        //    if (ModEntry.Instance.Handles.OnlyDropSmeltableApperal && __instance.pawn.Dead && !ap.Smeltable)
-        //    {
-        //        __result = false;
-        //        return false;
-        //    }
-        //    return true;
-        //}
-
-        #endregion 尸体腐烂小人穿的衣服才会有“已亡”
-
         /// <summary>
         /// 小人禁止生成亲戚
         /// </summary>
@@ -347,33 +298,25 @@ namespace RimEase.Source
             return true;
         }
 
-        //立刻开门，谁便写写竟然成功了
-        [HarmonyPrefix]
-        [HarmonyPatch(typeof(Building_Door), "<GetGizmos>b__69_1")]
-        private static bool Building_Door_GetGizmos(ref bool ___holdOpenInt, Building_Door __instance)
-        {
-            if (ModEntry.Instance.Handles.ToggleDoorOpenedInstantly)
-            {
-                ___holdOpenInt = !___holdOpenInt;
-                if (___holdOpenInt)//保持敞开
-                {
-                    AccessTools.Method(typeof(Building_Door), "DoorOpen")?.Invoke(__instance, new object[] { 110 });
-                }
-                else
-                {
-                    AccessTools.Method(typeof(Building_Door), "DoorTryClose")?.Invoke(__instance, null);
-                }
-                return false;
-            }
-
-            return true;
-        }
-
         [HarmonyPostfix]
         [HarmonyPatch(typeof(Trait), nameof(Trait.TipString))]
         private static void TraitTipString(ref string __result, Trait __instance)
         {
             __result += $"\n<b><color=#45B39D><{__instance.def.modContentPack.Name}></color></b>";
         }
+
+        /// <summary>
+        /// 在获取物品堆叠上限后执行的后缀补丁
+        /// 将大多数物品的堆叠上限修改
+        /// </summary>
+        /// <param name="__instance">当前处理的物品定义</param>
+        /// <param name="__result">原方法返回的堆叠上限值</param>
+        //[HarmonyPostfix]
+        //[HarmonyPatch(typeof(ThingDef))]
+        //[HarmonyPatch("stackLimit", MethodType.Getter)]
+        //private static void ModifyThingMaxStackLimit(ThingDef __instance, ref int __result)
+        //{
+        //    if (__result > 1) __result *= 20;
+        //}
     }
 }
