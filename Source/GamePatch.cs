@@ -1,14 +1,11 @@
-﻿using RimEase.Source.Utils;
-using HarmonyLib;
+﻿using HarmonyLib;
 using RimWorld;
 using RimWorld.Planet;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.Emit;
 using UnityEngine;
 using Verse;
-using Verse.AI;
 using Verse.Sound;
 using static Verse.DamageWorker;
 
@@ -40,55 +37,6 @@ namespace RimEase.Source
                 }
             }
         }
-
-        #region 尸体腐烂小人穿的衣服才会有“已亡”
-
-        [HarmonyPostfix]
-        [HarmonyPatch(typeof(Apparel), nameof(Apparel.Notify_PawnKilled))]
-        private static void Notify_PawnKilled(Apparel __instance)
-        {
-            if (ModEntry.Instance.Handles.betterSpoils)
-            {
-                __instance.WornByCorpse = false;
-            }
-        }
-
-        /// <summary>
-        /// 当尸体开始腐烂，衣服打上“亡者”标签
-        /// </summary>
-        [HarmonyPostfix]
-        [HarmonyPatch(typeof(Corpse), nameof(Corpse.RotStageChanged))]
-        private static void RotStageChanged(Corpse __instance)
-        {
-            /**
-             * Corpse:尸体 Rot
-             * :腐烂
-             */
-            if (ModEntry.Instance.Handles.betterSpoils && __instance.InnerPawn.apparel != null)
-            {
-                var apparels = (ThingOwner<Apparel>)__instance.InnerPawn.apparel.GetDirectlyHeldThings();
-                for (int i = 0; i < apparels.Count; i++)
-                {
-                    apparels[i].WornByCorpse = true;
-                }
-            }
-        }
-
-        //[HarmonyPrefix]
-        //[HarmonyPatch(typeof(Pawn_ApparelTracker), nameof(Pawn_ApparelTracker.TryDrop))]
-        //[HarmonyPatch(new Type[] { typeof(Apparel), typeof(Apparel), typeof(IntVec3), typeof(bool) },
-        //    new ArgumentType[] { ArgumentType.Normal, ArgumentType.Out, ArgumentType.Normal, ArgumentType.Normal })]
-        //private static bool TryDrop(Pawn_ApparelTracker __instance, Apparel ap, ref bool __result)
-        //{
-        //    if (ModEntry.Instance.Handles.OnlyDropSmeltableApperal && __instance.pawn.Dead && !ap.Smeltable)
-        //    {
-        //        __result = false;
-        //        return false;
-        //    }
-        //    return true;
-        //}
-
-        #endregion 尸体腐烂小人穿的衣服才会有“已亡”
 
         /// <summary>
         /// 小人禁止生成亲戚
@@ -297,83 +245,28 @@ namespace RimEase.Source
         }
 
         //彩色品质
-        public static void ColorQuality(QualityCategory cat, ref string __result)
-        {
-            switch (cat)
-            {
-                //AI写的
-                case QualityCategory.Legendary:
-                    __result = __result.Colorize(new Color(230, 175, 25)); // 深金色，接近古铜色，体现传奇武器的古老和珍贵
-                    break;
-
-                case QualityCategory.Masterwork:
-                    __result = __result.Colorize(new Color(220, 60, 60)); // 暗红，比纯红更具军事感
-                    break;
-
-                case QualityCategory.Excellent:
-                    __result = __result.Colorize(new Color(160, 70, 200)); // 亮紫色，提高可见性
-                    break;
-
-                case QualityCategory.Good:
-                    __result = __result.Colorize(new Color(65, 170, 70)); // 军绿色，符合游戏军事主题
-                    break;
-
-                case QualityCategory.Normal:
-                    __result = __result.Colorize(new Color(100, 100, 100)); // 中灰色，正常品质不突出显示
-                    break;
-
-                case QualityCategory.Poor:
-                    __result = __result.Colorize(new Color(140, 140, 140)); // 浅灰色，比正常品质略亮
-                    break;
-
-                case QualityCategory.Awful:
-                    __result = __result.Colorize(new Color(70, 70, 70)); // 深灰色，最差品质更暗淡
-                    break;
-            }
-        }
-
-        //立刻关闭电源，还有这种写法！！！
-        [HarmonyPrefix]
-        [HarmonyPatch(typeof(CompFlickable), "<CompGetGizmosExtra>b__20_1")]
-        private static bool CompGetGizmosExtra(ref bool ___wantSwitchOn, CompFlickable __instance)
-        {
-            if (ModEntry.Instance.Handles.TogglePowerInstantly)
-            {
-                ___wantSwitchOn = !___wantSwitchOn;
-                __instance.DoFlick();
-
-                return false;
-            }
-            return true;
-        }
-
-        //立刻开门，谁便写写竟然成功了
-        [HarmonyPrefix]
-        [HarmonyPatch(typeof(Building_Door), "<GetGizmos>b__69_1")]
-        private static bool Building_Door_GetGizmos(ref bool ___holdOpenInt, Building_Door __instance)
-        {
-            if (ModEntry.Instance.Handles.ToggleDoorOpenedInstantly)
-            {
-                ___holdOpenInt = !___holdOpenInt;
-                if (___holdOpenInt)//保持敞开
-                {
-                    AccessTools.Method(typeof(Building_Door), "DoorOpen")?.Invoke(__instance, new object[] { 110 });
-                }
-                else
-                {
-                    AccessTools.Method(typeof(Building_Door), "DoorTryClose")?.Invoke(__instance, null);
-                }
-                return false;
-            }
-
-            return true;
-        }
 
         [HarmonyPostfix]
-        [HarmonyPatch(typeof(Trait), nameof(Trait.TipString))]
-        private static void TraitTipString(ref string __result, Trait __instance)
+        [HarmonyPatch(typeof(QualityUtility), nameof(QualityUtility.GetLabel), new Type[] { typeof(QualityCategory) })]
+        private static void ColorQuality(QualityCategory cat, ref string __result)
         {
-            __result += $"\n<b><color=#45B39D><{__instance.def.modContentPack.Name}></color></b>";
+            if (string.IsNullOrEmpty(__result)) return;
+
+            // 十六进制颜色映射（基于你给出的 RGB 值）
+            string hex = cat switch
+            {
+                QualityCategory.Legendary => "E6AF19", // 230,175,25 深金色
+                QualityCategory.Masterwork => "DC3C3C", // 220,60,60 暗红
+                QualityCategory.Excellent => "A046C8", // 160,70,200 亮紫
+                QualityCategory.Good => "41AA46", // 65,170,70 军绿色
+                QualityCategory.Normal => "646464", // 100,100,100 中灰
+                QualityCategory.Poor => "8C8C8C", // 140,140,140 浅灰
+                QualityCategory.Awful => "464646", // 70,70,70 深灰
+                _ => "FFFFFF"
+            };
+
+            // 使用 Unity Rich Text 手动包裹 hex（确保格式为 #RRGGBB）
+            __result = $"<color=#{hex}>{__result}</color>";
         }
     }
 }

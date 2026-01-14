@@ -1,42 +1,24 @@
 ﻿using HarmonyLib;
-using HugsLib;
-using HugsLib.Utils;
 using RimWorld;
 using System.Collections;
-using System.Linq;
 using Verse;
 
 namespace RimEase.Source
 {
-    [EarlyInit]
-    internal class ModEntry : ModBase
+    internal class ModEntry : Mod
     {
-        public ModLogger Debug = new ModLogger("RimEase");
-
-        public ModEntry()
+        public ModEntry(ModContentPack content) : base(content)
         {
-            Instance = this;
-            //itemCategory = new ItemCategory();
-            HarmonyInst = new Harmony("YinMu.RimEase");
-            HarmonyInst.Patch(AccessTools.Method(typeof(QualityUtility), nameof(QualityUtility.GetLabel)), postfix: new HarmonyMethod(typeof(GamePatch), nameof(GamePatch.ColorQuality)));
-            HarmonyInst.Patch(AccessTools.Method(typeof(QualityUtility), nameof(QualityUtility.GetLabelShort)), postfix: new HarmonyMethod(typeof(GamePatch), nameof(GamePatch.ColorQuality)));
+            Harmony HarmonyInst = new Harmony("YinMu.RimEase");
+            //HarmonyInst.Patch(AccessTools.Method(typeof(QualityUtility), nameof(QualityUtility.GetLabel)), postfix: new HarmonyMethod(typeof(GamePatch), nameof(GamePatch.ColorQuality)));
+            //HarmonyInst.Patch(AccessTools.Method(typeof(QualityUtility), nameof(QualityUtility.GetLabelShort)), postfix: new HarmonyMethod(typeof(GamePatch), nameof(GamePatch.ColorQuality)));
             HarmonyInst.PatchAll();
+            Log.Message("RimEase模组：Harmony补丁已注入");
+            LongEventHandler.QueueLongEvent(ForEachDef, "WTM_LoadingMsg", false, null);
         }
 
-        public static ModEntry Instance { get; private set; }
-
-        /// <summary>
-        /// Handles:处理
-        /// </summary>
-        public ModSettings Handles { get; private set; }
-
-        public override string ModIdentifier => "RimEase";
-        protected override bool HarmonyAutoPatch => false;
-
-        public override void DefsLoaded()
+        private void ForEachDef()
         {
-            if (!ModIsActive) return;
-            Handles.Read(Settings);
             foreach (var thingDef in DefDatabase<ThingDef>.AllDefs)
             {
                 //所有堆叠数大于一的物品存储容量*20（SOS2不太够用）
@@ -61,31 +43,11 @@ namespace RimEase.Source
             }
         }
 
-        public override void EarlyInitialize()
-        {
-            Handles = new ModSettings();
-        }
-
-        public override void Tick(int currentTick)
-        {
-            //currentTick会一直增加
-            //TODO: 增加检测间隔
-            if (Handles.autoResearch && Find.ResearchManager.GetProject() == null)
-            {
-                //查找可研究项目
-                var project = (DefDatabase<ResearchProjectDef>.AllDefs
-                    .Where(p => p.CanStartNow)).RandomElement();
-                //检测研究台与研究设备，如果是基础研究台requiredResearchBuilding=null
-                //删繁就简
-                if (project != null) Find.ResearchManager.SetCurrentProject(project);
-            }
-        }
-
         private void AddModInfo(Def def)
         {
-            if (def.modContentPack != null)
+            if (!def.description.NullOrEmpty() && def.modContentPack != null && !def.description.Contains(def.modContentPack.Name))
             {
-                def.description += $"\n<i><b><color=#45B39D>{def.modContentPack.Name}</color></b></i>";
+                def.description += $"\n\n<color=#45B39D>来自模组: {def.modContentPack.Name}</color>";
             }
         }
     }

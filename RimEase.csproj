@@ -7,8 +7,8 @@
     <ProjectGuid>{BF4A5C8E-6FFA-456D-B8E3-02BA8FB5C151}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>BetterGameLife</RootNamespace>
-    <AssemblyName>BetterGameLife</AssemblyName>
+    <RootNamespace>RimEase</RootNamespace>
+    <AssemblyName>RimEase</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -43,26 +43,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Source\Misc\ItemCategory.cs" />
+    <Compile Include="Source\RemoveDefaultPlansGameComponent.cs" />
     <Compile Include="Source\Utils\Extensions.cs" />
     <Compile Include="Source\ModEntry.cs" />
     <Compile Include="Source\ModSettings.cs" />
-    <Compile Include="Source\ShowTrade\ShowTradeablePatch.cs" />
-    <Compile Include="Source\ShowTrade\TradeableGroup.cs" />
     <Compile Include="Source\GamePatch.cs" />
-    <Compile Include="Source\ShowTrade\Dialog_TradeableGoods.cs" />
-    <Compile Include="Source\WealthList\HistoryTabPatch.cs" />
-    <Compile Include="Source\WealthList\WealthThingGroup.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Krafs.Rimworld.Ref">
-      <Version>1.5.4409</Version>
+      <Version>1.6.4633</Version>
     </PackageReference>
     <PackageReference Include="Lib.Harmony">
-      <Version>2.3.6</Version>
-    </PackageReference>
-    <PackageReference Include="UnlimitedHugs.Rimworld.HugsLib">
-      <Version>11.0.5</Version>
+      <Version>2.4.2</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
