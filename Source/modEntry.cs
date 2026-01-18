@@ -1,6 +1,7 @@
 ﻿using HarmonyLib;
 using RimWorld;
 using System.Collections;
+using Unity.Burst.Intrinsics;
 using Verse;
 
 namespace RimEase.Source
@@ -9,10 +10,14 @@ namespace RimEase.Source
     {
         public ModEntry(ModContentPack content) : base(content)
         {
-            Harmony HarmonyInst = new Harmony("YinMu.RimEase");
-            //HarmonyInst.Patch(AccessTools.Method(typeof(QualityUtility), nameof(QualityUtility.GetLabel)), postfix: new HarmonyMethod(typeof(GamePatch), nameof(GamePatch.ColorQuality)));
-            //HarmonyInst.Patch(AccessTools.Method(typeof(QualityUtility), nameof(QualityUtility.GetLabelShort)), postfix: new HarmonyMethod(typeof(GamePatch), nameof(GamePatch.ColorQuality)));
-            HarmonyInst.PatchAll();
+            Harmony harmony = new Harmony("YinMu.RimEase");
+            harmony.Patch(AccessTools.Method(typeof(QualityUtility), "GetLabel"),
+                       prefix: null,
+                       postfix: new HarmonyMethod(typeof(GamePatch), nameof(GamePatch.ColorQuality)));
+            harmony.Patch(AccessTools.Method(typeof(QualityUtility), "GetLabelShort"),
+                       prefix: null,
+                       postfix: new HarmonyMethod(typeof(GamePatch), nameof(GamePatch.ColorQuality)));
+            harmony.PatchAll();
             Log.Message("RimEase模组：Harmony补丁已注入");
             LongEventHandler.QueueLongEvent(ForEachDef, "WTM_LoadingMsg", false, null);
         }

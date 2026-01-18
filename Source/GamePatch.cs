@@ -244,29 +244,34 @@ namespace RimEase.Source
             return false;
         }
 
-        //彩色品质
+        //立刻关闭电源，还有这种写法！！！
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(CompFlickable), "<CompGetGizmosExtra>b__20_1")]
+        private static bool CompGetGizmosExtra(ref bool ___wantSwitchOn, CompFlickable __instance)
+        {
+            ___wantSwitchOn = !___wantSwitchOn;
+            __instance.DoFlick();
 
-        [HarmonyPostfix]
-        [HarmonyPatch(typeof(QualityUtility), nameof(QualityUtility.GetLabel), new Type[] { typeof(QualityCategory) })]
-        private static void ColorQuality(QualityCategory cat, ref string __result)
+            return false;
+        }
+
+        // 方法级别标注，Postfix 保留游戏本地化并在结果外包裹十六进制颜色
+
+        public static void ColorQuality(QualityCategory cat, ref string __result)
         {
             if (string.IsNullOrEmpty(__result)) return;
-
-            // 十六进制颜色映射（基于你给出的 RGB 值）
-            string hex = cat switch
+            string color = cat switch
             {
-                QualityCategory.Legendary => "E6AF19", // 230,175,25 深金色
-                QualityCategory.Masterwork => "DC3C3C", // 220,60,60 暗红
-                QualityCategory.Excellent => "A046C8", // 160,70,200 亮紫
-                QualityCategory.Good => "41AA46", // 65,170,70 军绿色
-                QualityCategory.Normal => "646464", // 100,100,100 中灰
-                QualityCategory.Poor => "8C8C8C", // 140,140,140 浅灰
-                QualityCategory.Awful => "464646", // 70,70,70 深灰
+                QualityCategory.Awful => "8B0000",
+                QualityCategory.Poor => "FF4500",
+                QualityCategory.Normal => "FFFFFF",
+                QualityCategory.Good => "00AA00",
+                QualityCategory.Excellent => "00BFFF",
+                QualityCategory.Masterwork => "B19CD9",
+                QualityCategory.Legendary => "FFD700",
                 _ => "FFFFFF"
             };
-
-            // 使用 Unity Rich Text 手动包裹 hex（确保格式为 #RRGGBB）
-            __result = $"<color=#{hex}>{__result}</color>";
+            __result = $"<color=#{color}>{__result}</color>";
         }
     }
 }
